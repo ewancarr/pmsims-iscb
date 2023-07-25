@@ -1,11 +1,28 @@
 \documentclass[11pt]{beamer}
 
-\title{A simulation approach to calculating minimum sample sizes for prediction modelling}
+\title[The \texttt{pmsims} package for R]{
+    A simulation approach to calculating minimum sample sizes for prediction modelling
+}
 \subtitle{The \texttt{pmsims} package for R}
-\date{27th August 2023}
-\author{Ewan Carr, Gordon Forbes, Diana Shamsutdinova, Daniel Stahl, Felix Zimmer}
-\institute{Department of Biostatistics \& Health Informatics\\ King's College London}
-\titlegraphic{ADD LOGO}% \hfill\includegraphics[height=1.5cm]{logo.pdf}}
+\date{29$^{\text{th}}$ August 2023}
+\author[Biostatistics \& Health Informatics, KCL]{%
+    Ewan Carr, Gordon Forbes, Diana Shamsutdinova, Daniel Stahl, 
+    and Felix Zimmer}
+\institute[]{Department of Biostatistics \& Health Informatics\\ King's College London}
+\titlegraphic{\includegraphics[height=1.3cm]{figures/kcl.png}}
+\setbeamertemplate{navigation symbols}{}
+
+% Theme
+\definecolor{UBCblue}{rgb}{0.04706, 0.13725, 0.26667} % UBC Blue (primary)
+\definecolor{KCLpurple}{RGB}{80, 20, 145}
+\definecolor{KCLred}{RGB}{226, 35, 26}
+\definecolor{KCLhotpink}{RGB}{200, 50, 150}
+\usetheme{Madrid}
+\usecolortheme[named=KCLred]{structure}
+% \useoutertheme{infolines} % Alternatively: miniframes, infolines, split
+\useoutertheme{infolines} % Alternatively: miniframes, infolines, split
+% \useinnertheme{circles}
+\setbeamercolor{alerted text}{fg=KCLhotpink}
 
 \begin{document}
 
@@ -13,19 +30,37 @@
 
 \section{Introduction}
 
-\begin{frame}{Overview}
+\begin{frame}{30 second version}
+    \Large
+    \begin{enumerate}
+        \setlength{\itemsep}{12pt}
 
-\begin{itemize}
-    \item The importance of minimum sample sizes for prediction modelling; research waste.
-    \item Existing solutions; \texttt{pmsampsize}
-    \item Our approach, in a nutshell.
-    \begin{itemize}
-        \item Simulation to identify minimum sample size that satisfies criteria.
-        \item Flexible, but slower.
-    \end{itemize}
-\end{itemize}
-    
+        \item Prediction models developed with inadequate samples lead to
+            \alert{overfitting} and \alert{imprecise} estimates.
+
+        \item Existing tools use \alert{analytical methods} to derive minimum
+                samples sizes for continuous, binary, and survival outcomes. 
+
+            \item We've developed a \alert{simulation-based} approach that can
+                be applied to \alert{any} outcome or method.
+        \end{enumerate}
 \end{frame}
+
+\begin{frame}[t]{This talk}
+    \begin{enumerate}
+        \item Why is this needed?
+        \item Existing solutions. \texttt{pmsampsize}
+        \item Our approach
+            \begin{itemize}
+                \item Simulation to identify minimum sample size that satisfies criteria.
+                \item Flexible, but slower.
+                \item Gaussian process regression (via \texttt{mlpwr}) to speed up.
+            \end{itemize}
+        \item Next steps
+    \end{enumerate}
+\end{frame}
+
+\section{Background}
 
 \begin{frame}{Our workflow}
 
