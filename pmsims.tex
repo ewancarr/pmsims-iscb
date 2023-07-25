@@ -1,0 +1,99 @@
+\documentclass[11pt]{beamer}
+
+\title{A simulation approach to calculating minimum sample sizes for prediction modelling}
+\subtitle{The \texttt{pmsims} package for R}
+\date{27th August 2023}
+\author{Ewan Carr, Gordon Forbes, Diana Shamsutdinova, Daniel Stahl, Felix Zimmer}
+\institute{Department of Biostatistics \& Health Informatics\\ King's College London}
+\titlegraphic{ADD LOGO}% \hfill\includegraphics[height=1.5cm]{logo.pdf}}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+\begin{frame}{Overview}
+
+\begin{itemize}
+    \item The importance of minimum sample sizes for prediction modelling; research waste.
+    \item Existing solutions; \texttt{pmsampsize}
+    \item Our approach, in a nutshell.
+    \begin{itemize}
+        \item Simulation to identify minimum sample size that satisfies criteria.
+        \item Flexible, but slower.
+    \end{itemize}
+\end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Our workflow}
+
+    Picture.
+    
+\end{frame}
+
+\begin{frame}{Five steps}
+    \begin{enumerate}
+        \item Tuning of data generating function
+        \item \ldots
+        \item \ldots
+        \item \ldots
+        \item \ldots
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{This talk}
+    \begin{enumerate}
+        \item Criteria
+        \item Approach
+        \item R package
+        \item Demonstrations
+        \begin{enumerate}
+            \item Simple example
+            \item Comparison to \texttt{pmsampsize}
+            \item More complex examples
+            \begin{enumerate}
+                \item Lasso, ridge, elastic net
+                \item ML model, e.g.\ XGBoost or LightGBM
+                \item Non-working example of longitudinal/multilevel
+            \end{enumerate}
+        \end{enumerate}
+        \item Next steps
+    \end{enumerate}
+\end{frame}
+
+% For presentation: for example, a data with ~20 params and prevalence of 0.2 achieved performance of 0.75 AUC, We can then use our package to calculate sample size and compare with pmsampsize, Then, we use the tuned data generator from LR and check what is the performance for LR-Lasso and min sample size. Then, same for XGBoost. Riley seemed to advocate that XGBoost would need manifold more than LR, so we can check ![](20_f.png)
+
+% Do it for ridge regression
+% Do it for ML algorithms
+% Then point to a mixed model.
+
+
+\begin{frame}{Table of contents}
+  \setbeamertemplate{section in toc}[sections numbered]
+  \tableofcontents%[hideallsubsections]
+\end{frame}
+
+
+
+\section{Conclusion}
+
+{\setbeamercolor{palette primary}{fg=black, bg=yellow}
+\begin{frame}
+  Questions?
+\end{frame}
+}
+
+\appendix
+
+\begin{frame}[fragile]{Backup slides}
+T
+\end{frame}
+
+\begin{frame}[allowframebreaks]{References}
+  \bibliography{demo}
+  \bibliographystyle{abbrv}
+\end{frame}
+
+\end{document}
