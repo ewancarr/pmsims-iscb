@@ -2,14 +2,12 @@
 \usepackage{fontspec}
 \usepackage{booktabs}
 \usepackage{array}
-\setmonofont[Scale=0.9]{JetBrains Mono}
-\setmainfont{fonts/KingsBureauGrot-FiveOne.ttf}
-\setsansfont{fonts/KingsCaslon.ttf}
-\setbeamerfont{title page}{family=\fontspec{fonts/KingsBureauGrot-FiveOne.ttf}}
-\setbeamerfont{frametitle}{family=\fontspec{fonts/KingsBureauGrot-FiveOne.ttf}}
-\setlength{\parskip}{\baselineskip} 
-
-
+\setmonofont[Path=./fonts/,Scale=0.9]{JetBrainsMono.ttf}
+\setmainfont[Path=./fonts/]{KingsBureauGrot-FiveOne.ttf}
+\setsansfont[Path=./fonts/]{KingsCaslon.ttf}
+\setbeamerfont{title page}{family=\rmfamily}
+\setbeamerfont{frametitle}{family=\rmfamily}
+%\setlength{\parskip}{\baselineskip} 
 
 \usepackage{tcolorbox}
 \newtcolorbox{cbox}[3][]
@@ -197,18 +195,17 @@
 
 \begin{frame}[t]{We \img{figures/heart.png} pmsampsize, however\ldots}
 
-    pmsampsize has methods for simple continuous, binary, and survival outcome.
+    pmsampsize has methods for simple continuous, binary, and survival outcome. However, we increasingly need to derive minimum samples for:\
 
-    However, we increasingly need to derive minimum samples for:
+\begin{cbox}{KCLtealblue}{Other types of model}
+e.g., machine learning algorithms such as random forests or gradient boosting.
+\end{cbox}
 
-    \begin{itemize}
-        \item Other model types, e.g., machine learning algorithms
-            such as random forests or gradient boosting.
-        \item Other data types, e.g., repeated measures and longitudinal data.
-    \end{itemize}
+\begin{cbox}{KCLhotpink}{Other data types}{}
+e.g., repeated measures and longitudinal data.
+\end{cbox}
 
-    So, we've created a simulation-based framework for sample size estimation
-    for prediction.
+So, we've created a simulation-based framework for sample size estimation for prediction.
 
 \end{frame}
 
