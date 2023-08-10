@@ -8,6 +8,15 @@
 \setbeamerfont{title page}{family=\rmfamily}
 \setbeamerfont{frametitle}{family=\rmfamily}
 %\setlength{\parskip}{\baselineskip} 
+\usepackage[%
+  backend     = bibtex,
+  style       = numeric,
+  sorting     = ynt,
+  sortcites   = true,
+  autocite    = superscript
+]{biblatex}
+
+\addbibresource{references.bib}
 
 \usepackage{tcolorbox}
 \newtcolorbox{cbox}[3][]
@@ -123,32 +132,52 @@
 \begin{frame}[t]{What's the problem?}
 
     \begin{itemize}
-    \item Thousands of prediction models are developed every year.
-    \item Prediction models can inform treatment decisions, facilitate screening, and enable stratified care.
-\item  However, most are developed with inadequate samples.
+        \item Thousands of prediction models are developed every year.
+        \item Prediction models can inform treatment decisions, facilitate
+            screening, and enable stratified care.
+        \item  However, most are developed with inadequate samples.
     \end{itemize}
 
-    \begin{itemize}
-        \item In a review of prediction models for COVID-19, the most frequent problem was insufficient sample size, with 67\% (408/731) of models developed on too few patients (Wynants et al., 2020).
-        \item 56\% of models developed using supervised machine learning techniques are developed using inadequate sample sizes (Navarro et al., 2021).
-        \item 73\% of prediction models for psychiatry had inadequate sample size (Meehan et al., 2022).
-        \item Only 8\% of published machine learning models in oncology report a sample size justification.
-    \end{itemize}
+    \begin{cbox}{KCLtealblue}{}
+        \begin{itemize}
+            \item In a review of prediction models for COVID-19, the most
+                frequent problem was insufficient sample size. 67\%
+                (408/731) of models were developed on too few
+                patients\autocite{wynants2020}.
+            \item 56\% of models developed using supervised machine learning
+                techniques are developed using inadequate sample
+                sizes\autocite{navarro2021}.
+            \item 73\% of prediction models for psychiatry had inadequate
+                sample size\autocite{meehan2022}.
+            \item 8\% of machine learning models published in oncology report a
+                sample size justification\autocite{dhiman2022}.
+        \end{itemize}
+    \end{cbox}
 \end{frame}
 
 \begin{frame}[t]{Inadequate samples $\rightarrow$ research waste}
 
-    Inadequate samples lead to overfitting and inaccurate estimates of model
-    parameters. Overfitting is where the model captures idiosyncrasies of the
-    development sample, producing inflated estimates of predictive performance
-    that cannot be replicated in the target population. Unreliable models may
-    generate inappropriate decisions about patient care or lead to models not
-    being implemented into clinical practice. Data collection can be invasive
-    and inconvenient and diverts resources from other activities that benefit
-    patients. Ensuring sample sizes are sufficient before model development
-    would improve patient outcomes by avoiding models developed with inadequate
-    samples and reducing participant burden.
+    \begin{itemize}
+        \item Inadequate samples lead to overfitting and inaccurate estimates
+            of model parameters.
+            \begin{itemize}
+                \item Overfitting is where the model captures idiosyncrasies of the
+                    development sample, producing inflated estimates of predictive performance
+                    that cannot be replicated in the target population.
+            \end{itemize}
+        \item Unreliable models may generate inappropriate decisions about
+            patient care or lead to models not being implemented into clinical
+            practice.
+        \item Data collection can be invasive and inconvenient and diverts
+            resources from other activities that benefit patients.
 
+    \end{itemize}
+
+    \begin{cbox}{KCLseablue}{}
+        Ensuring sample sizes are sufficient \emph{before model development}
+        would improve patient outcomes by avoiding models developed with
+        inadequate samples and reducing participant burden.
+\end{cbox}
 \end{frame}
 
 \begin{frame}[t]{Tools for estimating minimum sample sizes for prediction}
@@ -327,13 +356,8 @@ TO SIGN-UP.
 
 \appendix
 
-\begin{frame}[fragile]{Backup slides}
-
-\end{frame}
-
 \begin{frame}[allowframebreaks]{References}
-  \bibliography{demo}
-  \bibliographystyle{abbrv}
+    \printbibliography
 \end{frame}
 
 \end{document}
