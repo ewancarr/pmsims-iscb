@@ -1,13 +1,19 @@
 \documentclass[11pt]{beamer}
-\usepackage{fontspec}
 \usepackage{booktabs}
 \usepackage{array}
-\setmonofont[Path=./fonts/,Scale=0.9]{JetBrainsMono.ttf}
-\setmainfont[Path=./fonts/]{KingsBureauGrot-FiveOne.ttf}
-\setsansfont[Path=./fonts/]{KingsCaslon.ttf}
-\setbeamerfont{title page}{family=\rmfamily}
-\setbeamerfont{frametitle}{family=\rmfamily}
-%\setlength{\parskip}{\baselineskip} 
+\usepackage{eulervm}
+\usepackage[scaled]{helvet}
+\usepackage[T1]{fontenc}
+
+% \setmonofont[Path=./fonts/,Scale=0.9]{JetBrainsMono.ttf}
+% \setmainfont[Path=./fonts/]{KingsBureauGrot-FiveOne.ttf}
+% \setsansfont[Path=./fonts/]{KingsCaslon.ttf}
+% \setsansfont{IBM Plex Sans}
+% \setbeamerfont{title page}{family=\rmfamily}
+% \setbeamerfont{frametitle}{family=\rmfamily}
+
+% References ------------------------------------------------------------------
+
 \usepackage[%
   backend     = bibtex,
   style       = numeric,
@@ -17,6 +23,9 @@
 ]{biblatex}
 
 \addbibresource{references.bib}
+
+% tcolorbox -------------------------------------------------------------------
+
 
 \usepackage{tcolorbox}
 \newtcolorbox{cbox}[3][]
@@ -29,7 +38,7 @@
   toptitle = 1mm,
   colupper = #2,  
   title    = {#3},
-  fonttitle = \bfseries\rmfamily,
+  fonttitle = \bfseries,
   #1,
   arc=0.2mm,
   left=1mm
