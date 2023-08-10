@@ -65,23 +65,18 @@
     Ewan Carr, Gordon Forbes, Diana Shamsutdinova, Daniel Stahl, 
     and Felix Zimmer}
 \institute[]{Department of Biostatistics \& Health Informatics\\ King's College London}
-\titlegraphic{\includegraphics[height=1.3cm]{figures/kcl.png}}
+\titlegraphic{\includegraphics[height=1.5cm]{figures/kcl.png}}
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{footline}[frame number]
 
 % Theme
-\definecolor{UBCblue}{rgb}{0.04706, 0.13725, 0.26667} % UBC Blue (primary)
 \definecolor{KCLpurple}{RGB}{80, 20, 145}
 \definecolor{KCLred}{RGB}{226, 35, 26}
 \definecolor{KCLhotpink}{RGB}{200, 50, 150}
 \definecolor{KCLpurple}{RGB}{80, 20, 145}
 \definecolor{KCLseablue}{RGB}{0, 90, 210}
 \definecolor{KCLtealblue}{RGB}{0, 154, 166}
-% \usetheme{Madrid}
 \usecolortheme[named=KCLseablue]{structure}
-% \useoutertheme{infolines} % Alternatively: miniframes, infolines, split
-% \useoutertheme{infolines} % Alternatively: miniframes, infolines, split
-% \useinnertheme{circles}
 \setbeamercolor{alerted text}{fg=KCLhotpink}
 
 \setbeamertemplate{itemize items}[circle]
@@ -269,19 +264,48 @@ So, we've created a simulation-based framework for sample size estimation for pr
 
 \end{frame}
 
-\begin{frame}[t]{Slide explaining input parameters and generators}
+\begin{frame}[t]{Slide explaining input parameters}
+
+    \begin{itemize}
+        \item \texttt{simulate\_continuous}
+        \item \texttt{simulate\_binary}
+        \item \texttt{simulate\_survival}
+    \end{itemize}
+
+    Which each call:
+
+    \begin{itemize}
+        \item \texttt{simulate\_custom}
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}[t]{Slide explaining default data and model generators}
+
+    List default data/model/metrics.
 
 \end{frame}
 
 \begin{frame}{Performing the search:\ \texttt{mlpwr}}
 
-    A simulation-based approach with complex data/models would be too slow.
+    \begin{cbox}{KCLpurple}{}
+        A simulation-based approach with complex data or models would be too
+        slow.
+    \end{cbox}
 
-    mlpwr is a R package by 
+    \begin{columns}
+        \begin{column}[c]{0.5\textwidth}
+            \texttt{mlpwr} is a R package by Felix Zimmer and Rudolf Debelak at
+            the University of Zurich.
+            \begin{quote}
+                ``A Power Analysis Toolbox to Find Cost-Efficient Study Designs''
+            \end{quote}
+        \end{column}
+        \begin{column}[c]{0.5\textwidth}
+            \includegraphics[width=\textwidth]{figures/mlpwr_paper.png}
+        \end{column}
+    \end{columns}
 
-    Felix Zimmer and Rudolf Debelak at the University of Zurich
-
-     "A Power Analysis Toolbox to Find Cost-Efficient Study Designs"
 
 \end{frame}
 
