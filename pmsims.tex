@@ -2,21 +2,19 @@
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{eulervm}
-% \usepackage{fontspec}
-\usepackage[scaled]{helvet}
-% \usepackage{lmodern}
-\usepackage[T1]{fontenc}
 
 \newcommand{\gap}{\vspace{0.8em}}
-% \setmonofont[Path=./fonts/,Scale=0.9]{JetBrainsMono.ttf}
-% \setmainfont[Path=./fonts/]{KingsBureauGrot-FiveOne.ttf}
-% \setsansfont{Fira Sans}
-% \setsansfont{IBM Plex Sans}
 
+% Fonts --------------------------------------------------------------------------
+
+\usepackage[scaled]{helvet}
+\usepackage[T1]{fontenc}
+
+% If using XeLaTeX:
+% \usepackage{fontspec}
 % \setmonofont[Path=./fonts/,Scale=0.9]{JetBrainsMono.ttf}
 % \setmainfont[Path=./fonts/]{KingsBureauGrot-FiveOne.ttf}
 % \setsansfont[Path=./fonts/]{KingsCaslon.ttf}
-% \setsansfont{IBM Plex Sans}
 % \setbeamerfont{title page}{family=\rmfamily}
 % \setbeamerfont{frametitle}{family=\rmfamily}
 
@@ -142,25 +140,18 @@
 \section{Background}
 
 \begin{frame}[t]{What's the problem?}
-
-	\begin{itemize}
-		\item Thousands of prediction models are developed every year.
-		\item Prediction models can inform treatment decisions, facilitate
-		      screening, and enable stratified care.
-		\item  However, most are developed with inadequate samples.
-	\end{itemize}
+    % Say: Prediction models can inform treatment decisions, facilitate
+	% screening, and enable stratified care.
+    Thousands of prediction models are developed each year. Most are developed with inadequate samples.
 
 	\begin{cbox}{KCLtealblue}{}
 		\begin{itemize}
-			\item In a review of prediction models for COVID-19, the most
-			      frequent problem was insufficient sample size. 67\%
-			      (408/731) of models were developed on too few
-			      patients\autocite{wynants2020}.
+  \item Insufficient sample size was the most common cause of high risk of bias in 731 models for COVID-19.\autocite{wynants2020} 67\% of models were developed on too few
+			      patients.
 			\item 56\% of models developed using supervised machine learning
 			      techniques are developed using inadequate sample
 			      sizes\autocite{navarro2021}.
-			\item 73\% of prediction models for psychiatry had inadequate
-			      sample size\autocite{meehan2022}.
+         \item Sample sizes were inadequate in 56\% of models developed using supervised machine learning\autocite{navarro2021} and and 73\% of models in psychiatry (Meehan et al., 2022). \% of prediction models for psychiatr\autocite{meehan2022}.
 			\item 8\% of machine learning models published in oncology report a
 			      sample size justification\autocite{dhiman2022}.
 		\end{itemize}
@@ -332,8 +323,8 @@
 
 	\begin{itemize}
 		\item Surrogate modeling aims to approximate a relationship that is
-		      costly to investigate with a cheaper function (Bhosekar &
-		      Ierapetritou, 2018; Forrester & Keane, 2009).
+		      costly to investigate with a cheaper function (Bhosekar \&
+		      Ierapetritou, 2018; Forrester \& Keane, 2009).
 
 		\item  We can adopt the idea of surrogate modeling to the functional
 		      relationship between study design parameters and power.
@@ -358,7 +349,6 @@
 \end{frame}
 
 \begin{frame}[t]{Slide explaining how we calculate the final sample size}
-
 	\begin{enumerate}
 		\item User specifies input parameters
 		      \begin{cbox}{KCLtealblue}{}
@@ -391,9 +381,19 @@
 
 \begin{frame}[t]{Example 1:\ Binary outcome, logistic regression }
 
+including comparison with \texttt{pmsampsize}
+
 \end{frame}
 
-\begin{frame}[t]{Example 2:\ Linear outcome, XGBoost}
+\begin{frame}[t]{Example 2:\ Binary outcome, LASSO regression }
+
+\end{frame}
+
+\begin{frame}[t]{Example 3:\ Custom model function}
+
+\texttt{simulate\_custom}
+
+XGBoost
 
 \end{frame}
 
@@ -405,7 +405,7 @@
 		      \href{https://fediscience.org/@ewan}{\textcolor{KCLseablue}{fediscience.org/@ewan}}
 		      for updates.
 		\item Or enter an email address at
-		      \href{https://tinyurl.com/pmsims-announce}{\textcolor{KCLblue}{tinyurl.com/is-it-ready-yet}}
+		      \href{https://tinyurl.com/pmsims-announce}{\textcolor{KCLseablue}{tinyurl.com/is-it-ready-yet}}
 		      to get one email when a public release is available.
 	\end{itemize}
 
