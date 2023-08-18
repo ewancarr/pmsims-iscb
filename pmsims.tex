@@ -63,13 +63,13 @@
 }
 
 \title[The \texttt{pmsims} package for R]{
-    A simulation approach to calculating minimum sample sizes for prediction modelling
+	A simulation approach to calculating minimum sample sizes for prediction modelling
 }
 \subtitle{The \texttt{pmsims} package for R}
 \date{29$^{\text{th}}$ August 2023}
 \author[Biostatistics \& Health Informatics, KCL]{%
-    Ewan Carr, Gordon Forbes, Diana Shamsutdinova, Daniel Stahl, 
-    and Felix Zimmer}
+	Ewan Carr, Gordon Forbes, Diana Shamsutdinova, Daniel Stahl,
+	and Felix Zimmer}
 \institute[]{Department of Biostatistics \& Health Informatics\\ King's College London}
 \titlegraphic{\includegraphics[height=1.5cm]{figures/kcl.png}}
 \setbeamertemplate{navigation symbols}{}
@@ -124,14 +124,16 @@
 	\begin{enumerate}
 		\item Background
 		      \begin{itemize}
-			      \item What's the problem?
+			      \item What is the problem?
 			      \item What solutions already exist?
 		      \end{itemize}
 		\item Our approach
 		      \begin{itemize}
-			      \item Simulation to identify minimum sample size that satisfies criteria.
+			      \item Simulation to identify minimum sample size that
+			            satisfies criteria.
 			      \item Flexible, but slower.
-			      \item Gaussian process regression (via \texttt{mlpwr}) to speed up.
+			      \item Gaussian process regression (via \texttt{mlpwr}) to
+			            speed up.
 		      \end{itemize}
 		\item Next steps
 	\end{enumerate}
@@ -140,18 +142,21 @@
 \section{Background}
 
 \begin{frame}[t]{What's the problem?}
-    % Say: Prediction models can inform treatment decisions, facilitate
+	% Say: Prediction models can inform treatment decisions, facilitate
 	% screening, and enable stratified care.
-    Thousands of prediction models are developed each year. Most are developed with inadequate samples.
+	Thousands of prediction models are developed each year. Most are developed
+	with inadequate samples.
 
 	\begin{cbox}{KCLtealblue}{}
 		\begin{itemize}
-  \item Insufficient sample size was the most common cause of high risk of bias in 731 models for COVID-19.\autocite{wynants2020} 67\% of models were developed on too few
-			      patients.
-			\item 56\% of models developed using supervised machine learning
-			      techniques are developed using inadequate sample
-			      sizes\autocite{navarro2021}.
-         \item Sample sizes were inadequate in 56\% of models developed using supervised machine learning\autocite{navarro2021} and and 73\% of models in psychiatry (Meehan et al., 2022). \% of prediction models for psychiatr\autocite{meehan2022}.
+			\item Insufficient sample size was the most common cause of high
+			      risk of bias in 731 models for
+			      COVID-19.\autocite{wynants2020} \alert{67\%} of models were
+			      developed on too few patients.
+			\item Sample sizes were inadequate in \alert{56\%} of models
+			      developed using supervised machine
+			      learning\autocite{navarro2021} and and 73\% of models in
+			      psychiatry \autocite{meehan2022}.
 			\item 8\% of machine learning models published in oncology report a
 			      sample size justification\autocite{dhiman2022}.
 		\end{itemize}
@@ -266,6 +271,10 @@
 
 	\gap
 	An R package.
+
+\end{frame}
+
+\begin{frame}[t]{Maybe put slide here about conceptual differences vs.\ pmsampsize?}
 
 \end{frame}
 
@@ -397,6 +406,10 @@ XGBoost
 
 \end{frame}
 
+\begin{frame}[t]{Maybe put slide with simulations here?}
+
+\end{frame}
+
 \begin{frame}[t]{Development status}
 	Package in development; functioning, but more testing needed.
 
@@ -409,8 +422,13 @@ XGBoost
 		      to get one email when a public release is available.
 	\end{itemize}
 
+    Please come and talk to us.
+
+    Criteria/models/etc. all subject to change.
+
 \end{frame}
-\begin{frame}[t]{What's next?}
+
+\begin{frame}[t]{What's next? (1/2)}
 
 \begin{cbox}{KCLtealblue}{1.\ Machine learning}{}
 
@@ -419,6 +437,10 @@ XGBoost
 \begin{cbox}{KCLpurple}{2.\ Longitudinal data}{}
 
 \end{tcolorbox}
+
+\end{frame}
+
+\begin{frame}[t]{What's next? (2/2)}
 
 \begin{cbox}{KCLseablue}{3.\ Common data types}{}
     e.g., clinical, NLP, genetic.
@@ -431,17 +453,10 @@ XGBoost
 
 \end{frame}
 
-% For presentation: for example, a data with ~20 params and prevalence of 0.2 achieved performance of 0.75 AUC, We can then use our package to calculate sample size and compare with pmsampsize, Then, we use the tuned data generator from LR and check what is the performance for LR-Lasso and min sample size. Then, same for XGBoost. Riley seemed to advocate that XGBoost would need manifold more than LR, so we can check ![](20_f.png)
-
-% Do it for ridge regression
-% Do it for ML algorithms
-% Then point to a mixed model.
-
-
 \section{Conclusion}
 
 \begin{frame}
-  Questions?
+    Thank you for listining.
 \end{frame}
 
 \appendix
