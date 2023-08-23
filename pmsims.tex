@@ -1,9 +1,12 @@
+
 \documentclass[11pt]{beamer}
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{eulervm}
+\usepackage{tcolorbox}
 
-\newcommand{\gap}{\vspace{0.8em}}
+\newcommand{\sgap}{\vspace{0.5em}}
+\newcommand{\bgap}{\vspace{0.8em}}
 
 % Fonts --------------------------------------------------------------------------
 
@@ -32,24 +35,32 @@
 
 % tcolorbox -------------------------------------------------------------------
 
-\usepackage{tcolorbox}
 \newtcolorbox{cbox}[3][]
 {
-  colframe = #2!10,
-  colback  = #2!10,
-  coltitle = #2,  
-  colbacktitle = #2!10,
+  colframe = #2!5,
+  colback  = #2!5,
+  coltitle = #2!50!black,  
+  colbacktitle = #2!5,
   lefttitle = 1mm,
-  toptitle = 1mm,
-  colupper = #2,  
+  toptitle = 2mm,
+  bottomtitle = 0mm,
+  colupper = #2!50!black,  
   title    = {#3},
-  fonttitle = \bfseries,
+  fonttitle = \bfseries\large,
   #1,
-  arc=0.2mm,
-  left=1mm,
-  before upper={\setbeamercolor{item}{fg=#2}},
-  after upper={\setbeamercolor{item}{fg=#2}}
+  arc=0.5mm,
+  left=2.5mm,
+  before upper={\setbeamercolor{item}{fg=#2!50!black}},
+  after upper={\setbeamercolor{item}{fg=#2!50!black}}
 }
+
+\makeatletter
+\def\beamer@origitem{%
+  \@inmatherr\item\@ifnextchar[\@item{\@noitemargtrue\@item[\@itemlabel]%
+  \csname beamer@thcfg@\beameritemnestingprefix item\endcsname% Insert colour in \beamer@thc@fg
+  \ifx\beamer@thc@fg\@empty\relax\else\color{\beamer@thc@fg}\fi% Execute colour
+  }}
+\makeatother
 
 \usepackage{graphicx}
 \newcommand*{\img}[1]{%
@@ -63,7 +74,8 @@
 }
 
 \title[The \texttt{pmsims} package for R]{
-	A simulation approach to calculating minimum sample sizes for prediction modelling
+    A simulation approach to calculating minimum sample sizes for prediction
+    modelling
 }
 \subtitle{The \texttt{pmsims} package for R}
 \date{29$^{\text{th}}$ August 2023}
@@ -82,6 +94,8 @@
 \definecolor{KCLpurple}{RGB}{80, 20, 145}
 \definecolor{KCLseablue}{RGB}{0, 90, 210}
 \definecolor{KCLtealblue}{RGB}{0, 154, 166}
+\definecolor{KCLpeagreen}{RGB}{0, 181, 136}
+\definecolor{KCLpantone}{RGB}{0, 35, 149}
 \usecolortheme[named=KCLseablue]{structure}
 \setbeamercolor{alerted text}{fg=KCLhotpink}
 
@@ -100,107 +114,161 @@
 
 \section{Introduction}
 
-\begin{frame}{30-second version}
+\begin{frame}[c]{30-second version}
 	\Large
 	\begin{enumerate}
 		\setlength{\itemsep}{12pt}
 
-		\item Prediction models developed with inadequate samples lead to
-		      \alert{overfitting} and \alert{imprecise} estimates.
+		\item Most prediction models use small samples.
 
-		\item Existing tools use \alert{analytical methods} to derive minimum
-		      samples sizes for continuous, binary, and survival outcomes.
+		\item Small samples cause overfitting and imprecise estimates.
 
-		\item We've developed a \alert{simulation-based} approach that can
-		      be applied to \alert{any} outcome or method.
+		\item Existing tools can estimate minimum samples for continuous,
+		      binary, and survival outcomes.
+
+		\item Nothing exists for other models or data types.
+
 	\end{enumerate}
+
+	\sgap
+
+	\begin{cbox}{KCLtealblue}{}
+		We're developing a simulation-based approach that works with any
+		outcome or method.
+	\end{cbox}
+	\vspace{-1em}
 \end{frame}
 
 \begin{frame}[c]
 	\includegraphics[width=\textwidth]{figures/group_photos.pdf}
 \end{frame}
 
-\begin{frame}[t]{Overview}
+\begin{frame}[t]{This talk}
+	\large
 	\begin{enumerate}
 		\item Background
 		      \begin{itemize}
-			      \item What is the problem?
-			      \item What solutions already exist?
+			      \item What's the problem we're trying to solve?
+			      \item What solutions currently exist?
 		      \end{itemize}
-		\item Our approach
+		\item Our simulation-based approach
 		      \begin{itemize}
-			      \item Simulation to identify minimum sample size that
-			            satisfies criteria.
-			      \item Flexible, but slower.
-			      \item Gaussian process regression (via \texttt{mlpwr}) to
-			            speed up.
+			      \item Workflow and user interface
+			      \item How it compares to other packages
 		      \end{itemize}
-		\item Next steps
+		\item Demonstration
+		\item Development status and next steps
 	\end{enumerate}
+
+	\bgap
+\end{frame}
+
+\begin{frame}[c]
+	\centering
+	\begin{columns}
+		\begin{column}[c]{0.6\textwidth}
+			We're still developing the package.
+
+			Your feedback is welcome.
+
+			Please get in touch.
+		\end{column}
+		\begin{column}[c]{0.3\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{figures/roadwork-sign.png}
+		\end{column}
+	\end{columns}
+
 \end{frame}
 
 \section{Background}
 
 \begin{frame}[t]{What's the problem?}
+
 	% Say: Prediction models can inform treatment decisions, facilitate
 	% screening, and enable stratified care.
-	Thousands of prediction models are developed each year. Most are developed
-	with inadequate samples.
 
-	\begin{cbox}{KCLtealblue}{}
+	Hundreds of prediction models are developed each year. Most have
+	inadequate samples.
+
+	\begin{cbox}{KCLseablue}{}
+		\large
 		\begin{itemize}
-			\item Insufficient sample size was the most common cause of high
-			      risk of bias in 731 models for
-			      COVID-19.\autocite{wynants2020} \alert{67\%} of models were
-			      developed on too few patients.
-			\item Sample sizes were inadequate in \alert{56\%} of models
-			      developed using supervised machine
-			      learning\autocite{navarro2021} and and 73\% of models in
-			      psychiatry \autocite{meehan2022}.
-			\item 8\% of machine learning models published in oncology report a
-			      sample size justification\autocite{dhiman2022}.
+			\item Insufficient sample sizes was the most common cause of bias
+			      in 731 models for COVID-19.\autocite{wynants2020}
+			\item Inadequate samples were found in: \vspace{0.5em}
+		\end{itemize}
+		\begin{tabular}{lp{.8\textwidth}}
+			{\Huge \alert{67\%}} & models for COVID-19\autocite{wynants2020}                      \\[0.5em]
+			{\Huge \alert{56\%}} & models using supervised machine learning\autocite{navarro2021} \\[0.5em]
+			{\Huge \alert{73\%}} & models in psychiatry\autocite{meehan2022}                      \\[0.3em]
+		\end{tabular}
+		\begin{itemize}
+			\item Just \alert{8\%} of machine learning models in oncology
+			      reported a sample size justification\autocite{dhiman2022}.
 		\end{itemize}
 	\end{cbox}
 \end{frame}
 
-\begin{frame}[t]{Inadequate samples $\rightarrow$ research waste}
+\begin{frame}[t]{Inadequate samples = research waste}
 
 	\begin{itemize}
 		\item Inadequate samples lead to overfitting and inaccurate estimates
 		      of model parameters.
-		      \begin{itemize}
-			      \item Overfitting is where the model captures idiosyncrasies
-			            of the development sample, producing inflated
-			            estimates of predictive performance that cannot be
-			            replicated in the target population.
-		      \end{itemize}
-		\item Unreliable models may generate inappropriate decisions about
-		      patient care or lead to models not being implemented into
-		      clinical practice.
+
+		      % Overfitting is where the model captures idiosyncrasies
+		      % of the development sample, producing inflated estimates of predictive
+		      % performance that cannot be replicated in the target population.
+
+		\item This may generate inappropriate decisions about patient care or
+		      lead to models not being implemented into clinical practice.
+
 		\item Data collection can be invasive and inconvenient and diverts
 		      resources from other activities that benefit patients.
 
 	\end{itemize}
 
-	\begin{cbox}{KCLseablue}{}
-		Ensuring sample sizes are sufficient \emph{before model development}
+	\begin{cbox}{KCLpurple}{}
+		\large
+		Ensuring sample sizes are sufficient \textbf{before model development}
 		would improve patient outcomes by avoiding models developed with
 		inadequate samples and reducing participant burden.
 	\end{cbox}
 
 \end{frame}
 
-\begin{frame}[t]{Tools for estimating minimum sample sizes for prediction}
+\begin{frame}[t]{What tools currently exist?}
 
-	Until recently, most studies ignored sample size.
+	\centering
+	\begin{columns}
+		\begin{column}[c]{0.6\textwidth}
+			\centering
+			Most studies ignore sample size.
+		\end{column}
+		\begin{column}[c]{0.35\textwidth}
+			\includegraphics[width=\textwidth]{figures/bury-head.png}
+		\end{column}
+	\end{columns}
 
-	Or they used simple rules-of-thumb (e.g., 10 events per variable).
+	\vspace{3em}
 
-	In 2018, \texttt{pmsampsize} was released by Riley et al.
+	Or use rules of thumb (e.g., 10 events per variable) that have no
+	rationale in prediction modelling\autocite{vansmeden2016}.
 
+	% However, this rule of thumb has been shown to have no rationale, especially
+	% in prediction model research, as its evidence base is mainly informed by
+	% simulation studies that investigate the performance of estimating
+	% covariate-outcome relationships.
+	% https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/s12874-023-02008-1
+
+	\vspace{3em}
+	In 2018, Riley et al released \texttt{pmsampsize} for R and Stata.
+
+\end{frame}
+
+\begin{frame}[t]{\texttt{pmsampsize}}
 	\begin{columns}
 		\begin{column}[c]{0.5\textwidth}
-			\includegraphics[width=\textwidth]{figures/riley1.png}
 
 		\end{column}
 		\begin{column}[c]{0.5\textwidth}
@@ -208,6 +276,9 @@
 
 		\end{column}
 	\end{columns}
+
+	pmsampsize has methods for simple continuous, binary, and survival
+	outcome.
 
 \end{frame}
 
@@ -231,46 +302,94 @@
 
 \end{frame}
 
-\begin{frame}[t]{We \img{figures/heart.png} pmsampsize, however\ldots}
+\begin{frame}[c]{We \img{figures/heart.png} pmsampsize, but\ldots}
+	\large
 
-	pmsampsize has methods for simple continuous, binary, and survival
-	outcome. However, we increasingly need to derive minimum samples for:\
+	We increasingly need to estimate minimum samples for:
 
-	\begin{cbox}{KCLtealblue}{Other types of model}
-		e.g., machine learning algorithms such as random forests or gradient boosting.
+	\begin{cbox}{KCLtealblue}{Other models}
+		\begin{itemize}
+			\item Regularised regression (e.g., LASSO, elastic net)
+			\item Machine learning algorithms (e.g., random forests, gradient
+			      boosting)
+		\end{itemize}
 	\end{cbox}
 
-	\begin{cbox}{KCLhotpink}{Other data types}{}
-		e.g., repeated measures and longitudinal data.
+	\begin{cbox}{KCLhotpink}{Other types of data}{}
+		\begin{itemize}
+			\item Longitudinal and repeated measures
+			\item Clustered data
+		\end{itemize}
 	\end{cbox}
 
-	So, we've created a simulation-based framework for sample size estimation
+	We're creating a simulation-based framework to estimate sample sizes
 	for prediction.
 
 \end{frame}
 
-\begin{frame}{pmsims}
+\begin{frame}[t]{The \alert{pmsims} package for R}
 
-	A simulation-based framework that derives the minimum sample that
-	achieves:
-
-	\begin{itemize}
-		\item Within 10\% of the expected large-sample performance;
-		\item Calibration slope of >0.9
-	\end{itemize}
-
-	\gap
-
-	Key features:
+    Key features:
 
 	\begin{itemize}
-		\item Can be used with any model or data type
-		\item Provides defaults for common model and data types
-		\item Efficient
+		\item Able to estimate minimum sample sizes for \alert{any model or data
+		      type};
+		\item Provides defaults for common model and data types;
+		\item Efficient estimation.
 	\end{itemize}
 
-	\gap
-	An R package.
+    This last point is key:\ most machine learning approaches are too
+    computationally demanding for conventional simulation approaches.
+
+\end{frame}
+
+\begin{frame}[t]{Our approach}
+
+	\begin{cbox}{KCLpeagreen}{Setting}
+		\begin{enumerate}
+			\setlength{\itemsep}{7pt}
+			\item A study population represented by outcome-related individual
+			      characteristics (i.e., candidate predictors).
+			\item A chosen statistical or machine learning model.
+			\item Expected achievable performance (e.g., $R^2$, AUC) without
+			      sample size constraints, $P^{*}$.
+			\item Minimum acceptable performance of the model, $P^{OK}$.
+		\end{enumerate}
+	\end{cbox}
+
+    \onslide<2>
+	\sgap
+    \centering
+	\includegraphics[height=3.6em]{figures/target.pdf}
+    \hspace{0.7em}
+    \large
+	\parbox[b]{0.8\textwidth}{
+        \raggedright
+        \textcolor{KCLpantone}{ Find the minimum sample
+	    that ensures test performance of $P^{OK}$ with probability of 80\%,
+	    given the population, predictors, and $P^{*}$. } }
+
+	% i.e., drawing a random sample of size $n$ will result in a model with
+	% performance $>P^{OK}$ in more than 80\% of cases.
+
+\end{frame}
+
+\begin{frame}[c,fragile]{How does it work?}
+
+    \begin{columns}
+        \begin{column}[c]{0.5\textwidth}
+            \centering
+            \only<1>{\includegraphics[width=0.7\textwidth]{figures/workflow-a.pdf}}
+            \only<2>{\includegraphics[width=0.7\textwidth]{figures/workflow-b.pdf}}
+            \only<3>{\includegraphics[width=0.7\textwidth]{figures/workflow-c.pdf}}
+            \only<4>{\includegraphics[width=0.7\textwidth]{figures/workflow-d.pdf}}
+            \only<5>{\includegraphics[width=0.7\textwidth]{figures/workflow-e.pdf}}
+        \end{column}
+        \begin{column}[c]{0.5\textwidth}
+            Some text here.
+    
+        \end{column}
+    \end{columns}
 
 \end{frame}
 
@@ -280,7 +399,7 @@
 
 \begin{frame}[c]{Our approach}
 
-    \includegraphics[width=\textwidth]{figures/workflow1.pdf}
+	\includegraphics[width=\textwidth]{figures/workflow1.pdf}
 
 \end{frame}
 
@@ -302,7 +421,7 @@
 
 \begin{frame}[t]{Slide explaining default data and model generators}
 
-    List default data/model/metrics.
+	List default data/model/metrics.
 
 \end{frame}
 
@@ -353,7 +472,7 @@
 
 \begin{frame}[c]{Example}
 
-    \includegraphics[width=\textwidth]{figures/mlpwr_example.png}
+	\includegraphics[width=\textwidth]{figures/mlpwr_example.png}
 
 \end{frame}
 
@@ -378,19 +497,28 @@
 		      \end{cbox}
 
 		\item Tune the data generating model
-		\item Perform search
+		\item Perform search; return minimum sample meeting criteria.
 	\end{enumerate}
 
-	\gap
+	\sgap
+
+\end{frame}
+
+\begin{frame}[t]{CRITERIA}
 
 	We then return the minimum sample that is within 10\% of expect large
 	sample performance in 80\% of replications.
+
+	If we had unlimited data, what's possible? Best case. What is the sample
+	size that is sufficient to be within 10\% of this maximum achieveable.
+
+	How many replications?
 
 \end{frame}
 
 \begin{frame}[t]{Example 1:\ Binary outcome, logistic regression }
 
-including comparison with \texttt{pmsampsize}
+	including comparison with \texttt{pmsampsize}
 
 \end{frame}
 
@@ -400,14 +528,24 @@ including comparison with \texttt{pmsampsize}
 
 \begin{frame}[t]{Example 3:\ Custom model function}
 
-\texttt{simulate\_custom}
+	\texttt{simulate\_custom}
 
-XGBoost
+	XGBoost
 
 \end{frame}
 
 \begin{frame}[t]{Maybe put slide with simulations here?}
 
+	With our package we can replicate other criteria.
+
+	How would it look if we included pmsampsize criteria within pmsims
+	framework?
+
+	For example, shrinkage from \texttt{pmsampsize}:
+
+	DEMO
+
+	We can accomodate any.
 \end{frame}
 
 \begin{frame}[t]{Development status}
@@ -422,9 +560,9 @@ XGBoost
 		      to get one email when a public release is available.
 	\end{itemize}
 
-    Please come and talk to us.
+	Please come and talk to us.
 
-    Criteria/models/etc. all subject to change.
+	Criteria/models/etc. all subject to change.
 
 \end{frame}
 
@@ -443,7 +581,7 @@ XGBoost
 \begin{frame}[t]{What's next? (2/2)}
 
 \begin{cbox}{KCLseablue}{3.\ Common data types}{}
-    e.g., clinical, NLP, genetic.
+e.g., clinical, NLP, genetic.
 
 \end{tcolorbox}
 
@@ -456,13 +594,14 @@ XGBoost
 \section{Conclusion}
 
 \begin{frame}
-    Thank you for listining.
+	Thank you for listening.
 \end{frame}
 
 \appendix
 
 \begin{frame}[allowframebreaks]{References}
-    \printbibliography
+    \renewcommand*{\bibfont}{\scriptsize}
+	\printbibliography
 \end{frame}
 
 \end{document}
