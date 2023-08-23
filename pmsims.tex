@@ -358,7 +358,7 @@
 	\end{cbox}
 
     \onslide<2>
-	\sgap
+	\bgap 
     \centering
 	\includegraphics[height=3.6em]{figures/target.pdf}
     \hspace{0.7em}
@@ -374,133 +374,103 @@
 
 \end{frame}
 
-\begin{frame}[c,fragile]{How does it work?}
+\begin{frame}{How does it work?}
 
-    \begin{columns}
-        \begin{column}[c]{0.5\textwidth}
-            \centering
-            \only<1>{\includegraphics[width=0.7\textwidth]{figures/workflow-a.pdf}}
-            \only<2>{\includegraphics[width=0.7\textwidth]{figures/workflow-b.pdf}}
-            \only<3>{\includegraphics[width=0.7\textwidth]{figures/workflow-c.pdf}}
-            \only<4>{\includegraphics[width=0.7\textwidth]{figures/workflow-d.pdf}}
-            \only<5>{\includegraphics[width=0.7\textwidth]{figures/workflow-e.pdf}}
-        \end{column}
-        \begin{column}[c]{0.5\textwidth}
-            Some text here.
-    
-        \end{column}
-    \end{columns}
-
-\end{frame}
-
-\begin{frame}[t]{Maybe put slide here about conceptual differences vs.\ pmsampsize?}
-
-\end{frame}
-
-\begin{frame}[c]{Our approach}
-
-	\includegraphics[width=\textwidth]{figures/workflow1.pdf}
-
-\end{frame}
-
-\begin{frame}[t]{Slide explaining input parameters}
-
-	\begin{itemize}
-		\item \texttt{simulate\_continuous}
-		\item \texttt{simulate\_binary}
-		\item \texttt{simulate\_survival}
-	\end{itemize}
-
-	Which each call:
-
-	\begin{itemize}
-		\item \texttt{simulate\_custom}
-	\end{itemize}
-
-\end{frame}
-
-\begin{frame}[t]{Slide explaining default data and model generators}
-
-	List default data/model/metrics.
-
-\end{frame}
-
-\begin{frame}{Performing the search:\ \texttt{mlpwr}}
-
-	\begin{cbox}{KCLpurple}{}
-		A simulation-based approach with complex data or models would be too
-		slow.
-	\end{cbox}
-
-	\begin{columns}
-		\begin{column}[c]{0.5\textwidth}
-			\texttt{mlpwr} is a R package by Felix Zimmer and Rudolf Debelak at
-			the University of Zurich.
-			\begin{quote}
-				``A Power Analysis Toolbox to Find Cost-Efficient Study Designs''
-			\end{quote}
+	\begin{columns}[T]
+		\begin{column}{0.4\textwidth}
+			\centering
+			\includegraphics<+>[width=0.85\textwidth]{figures/workflow-a.pdf}%
+			\includegraphics<+>[width=0.85\textwidth]{figures/workflow-b.pdf}%
+			\includegraphics<+>[width=0.85\textwidth]{figures/workflow-c.pdf}%
+			\includegraphics<+>[width=0.85\textwidth]{figures/workflow-d.pdf}%
+			\includegraphics<+>[width=0.85\textwidth]{figures/workflow-e.pdf}%
 		\end{column}
-		\begin{column}[c]{0.5\textwidth}
-			\includegraphics[width=\textwidth]{figures/mlpwr_paper.png}
+		\begin{column}{0.7\textwidth}
+			\only<2>{
+				\vspace{1em}
+				The user specifies:
+				\begin{enumerate}
+					\item The candidate predictors (number, type)
+					\item The chosen statistical model
+					\item The expected large sample performance ($P^{*}$)
+					\item The minimum acceptable performance ($P^{OK}$)
+				\end{enumerate}
+			}%
+			\only<3>{
+				\vspace{6em}
+				Based on their input, we set:
+				\begin{enumerate}
+					\item A data generating function
+					\item A model function
+					\item A metric function
+				\end{enumerate}
+			}%
+			\only<4>{
+				\vspace{11em}
+				We then tune the data generating model, so the large sample
+				performance is $P^{*}$.
+			}
 		\end{column}
 	\end{columns}
 
 \end{frame}
 
-\begin{frame}[t]{Surrogate modeling}
+\begin{frame}[t]{Performing the search}
 
-	\begin{itemize}
-		\item Surrogate modeling aims to approximate a relationship that is
-		      costly to investigate with a cheaper function (Bhosekar \&
-		      Ierapetritou, 2018; Forrester \& Keane, 2009).
+	\vspace{-1em}
 
-		\item  We can adopt the idea of surrogate modeling to the functional
-		      relationship between study design parameters and power.
+	\begin{columns}
+		\begin{column}[c]{0.55\textwidth}
+			\centering
+			An exhaustive grid search would be too slow for many model types.
+		\end{column}
+		\begin{column}[c]{0.30\textwidth}
+			\includegraphics[width=\textwidth]{figures/tortoise.png}
+		\end{column}
+	\end{columns}
 
-		\item Using this functional relationship, we can predict the power for
-		      a sample size that we did not perform a simulation at
-		      beforehand.
+	\vspace{-1.5em}
 
-		\item Surrogate modeling is more efficient than grid search: In a
-		      simple example, our approach required only 20\% of the
-		      computational effort and performed 50\% more simulation runs
-		      that used the optimal sample size (Zimmer \& Debelak, 2022).
+	\begin{cbox}{KCLpurple}{Surrogate modelling}
 
-	\end{itemize}
+		% Surrogate modeling aims to approximate a relationship that is costly to
+		% investigate with a cheaper function.
+
+		\begin{itemize}
+			\item Surrogate modelling approximates the relationship between
+			      sample size and $P^{OK}$.
+			\item Also referred to as `learning curve
+			      fitting'\autocite{figueroa2012, dayimu2023}.
+              \item We're building on the mlpwr R package by Felix Zimmer and Rudolf Debelak CITE.
+              \emph{Simulation-based Design Optimization for Statistical Power:\ Utilizing Machine Learning} (Forthcoming, JOURNAL)
+              \item This uses Gaussian process regression.
+		\end{itemize}
+	\end{cbox}
+\end{frame}
+
+\begin{frame}[c]{Surrogate modelling}
+
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/surrogate_algorithm.pdf}
 
 \end{frame}
 
-\begin{frame}[c]{Example}
 
-	\includegraphics[width=\textwidth]{figures/mlpwr_example.png}
+\begin{frame}[t]{Slide with graph showing how surrogate modelling works}
+
+    Ewan will add.
 
 \end{frame}
 
-\begin{frame}[t]{Slide explaining how we calculate the final sample size}
-	\begin{enumerate}
-		\item User specifies input parameters
-		      \begin{cbox}{KCLtealblue}{}
-			      \begin{itemize}
-				      \item The expected large sample performance of the
-				            model.
-				      \item The range of sample sizes over which to search.
-				      \item The number of signal and noise parameters.
-				      \item The expected outcome prevalence.
-			      \end{itemize}
-		      \end{cbox}
-		\item Set data, model, and metric functions based on user input
-		      \begin{cbox}{KCLtealblue}{}
-			      \begin{itemize}
-				      \item Use defaults, but can be specified (e.g.\
-				            \texttt{model = ``lasso''}).
-			      \end{itemize}
-		      \end{cbox}
+\begin{frame}[t]{What is performance?}
 
-		\item Tune the data generating model
-		\item Perform search; return minimum sample meeting criteria.
-	\end{enumerate}
+    Diana slide 1 - our criteria, how we assess them.
 
-	\sgap
+\end{frame}
+
+\begin{frame}[t]{What is performance?}
+
+    Diana slide 2 - how our criteria compare to pmsampsize 
 
 \end{frame}
 
@@ -513,6 +483,22 @@
 	size that is sufficient to be within 10\% of this maximum achieveable.
 
 	How many replications?
+
+\end{frame}
+
+\begin{frame}[t]{The user interface}
+
+	\begin{itemize}
+		\item \texttt{simulate\_continuous}
+		\item \texttt{simulate\_binary}
+		\item \texttt{simulate\_survival}
+	\end{itemize}
+
+	Which each call:
+
+	\begin{itemize}
+		\item \texttt{simulate\_custom}
+	\end{itemize}
 
 \end{frame}
 
