@@ -1,17 +1,30 @@
-
 \documentclass[11pt]{beamer}
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{eulervm}
 \usepackage{tcolorbox}
+\usepackage[export]{adjustbox}
+\usepackage{tikz}
+\usepackage{minted}
+\usemintedstyle{gruvbox-light}
+\newcommand{\R}[1]{\mintinline[escapeinside=||]{r}{#1}}
 
 \newcommand{\sgap}{\vspace{0.5em}}
 \newcommand{\bgap}{\vspace{0.8em}}
+
+\newcommand\Wider[2][3em]{%
+\makebox[\linewidth][c]{%
+  \begin{minipage}{\dimexpr\textwidth+#1\relax}
+  \raggedright#2
+  \end{minipage}%
+  }%
+}
 
 % Fonts --------------------------------------------------------------------------
 
 \usepackage[scaled]{helvet}
 \usepackage[T1]{fontenc}
+\usepackage[scale=0.95]{inconsolata}
 
 % If using XeLaTeX:
 % \usepackage{fontspec}
@@ -70,6 +83,14 @@
         width=\baselineskip,
         keepaspectratio,
         ]{#1}%
+    }%
+}
+
+\newcommand*{\timg}[2]{%
+	\raisebox{-.5#1}{%
+		\includegraphics[
+			width=#1
+		]{#2}%
     }%
 }
 
@@ -161,23 +182,22 @@
 	\end{enumerate}
 
 	\bgap
-\end{frame}
-
-\begin{frame}[c]
 	\centering
-	\begin{columns}
-		\begin{column}[c]{0.6\textwidth}
-			We're still developing the package.
+	\begin{cbox}{KCLhotpink}{}
+		\begin{columns}
+			\begin{column}[c]{0.6\textwidth}
+				We're still developing the package.
 
-			Your feedback is welcome.
+				Your feedback is welcome.
 
-			Please get in touch.
-		\end{column}
-		\begin{column}[c]{0.3\textwidth}
-			\centering
-			\includegraphics[width=\linewidth]{figures/roadwork-sign.png}
-		\end{column}
-	\end{columns}
+				Please get in touch.
+			\end{column}
+			\begin{column}[c]{0.3\textwidth}
+				\centering
+				\includegraphics[width=\linewidth]{figures/roadwork-sign.png}
+			\end{column}
+		\end{columns}
+	\end{cbox}
 
 \end{frame}
 
@@ -322,24 +342,24 @@
 		\end{itemize}
 	\end{cbox}
 
-	We're creating a simulation-based framework to estimate sample sizes
-	for prediction.
+	We're creating a simulation-based framework to estimate sample sizes for
+	prediction.
 
 \end{frame}
 
 \begin{frame}[t]{The \alert{pmsims} package for R}
 
-    Key features:
+	Key features:
 
 	\begin{itemize}
-		\item Able to estimate minimum sample sizes for \alert{any model or data
-		      type};
+		\item Able to estimate minimum sample sizes for \alert{any model or
+		      data type};
 		\item Provides defaults for common model and data types;
 		\item Efficient estimation.
 	\end{itemize}
 
-    This last point is key:\ most machine learning approaches are too
-    computationally demanding for conventional simulation approaches.
+	This last point is key:\ most machine learning approaches are too
+	computationally demanding for conventional simulation approaches.
 
 \end{frame}
 
@@ -357,17 +377,16 @@
 		\end{enumerate}
 	\end{cbox}
 
-    \onslide<2>
-	\bgap 
-    \centering
+	\onslide<2>
+	\bgap
+	\centering
 	\includegraphics[height=3.6em]{figures/target.pdf}
-    \hspace{0.7em}
-    \large
-	\parbox[b]{0.8\textwidth}{
-        \raggedright
-        \textcolor{KCLpantone}{ Find the minimum sample
-	    that ensures test performance of $P^{OK}$ with probability of 80\%,
-	    given the population, predictors, and $P^{*}$. } }
+	\hspace{0.7em}
+	\large
+	\parbox[b]{0.8\textwidth}{ \raggedright \textcolor{KCLpantone}{ Find the
+	    minimum sample that ensures test performance of $P^{OK}$ with
+	    probability of 80\%, given the population, predictors, and $P^{*}$. }
+	    }
 
 	% i.e., drawing a random sample of size $n$ will result in a model with
 	% performance $>P^{OK}$ in more than 80\% of cases.
@@ -379,14 +398,13 @@
 	\begin{columns}[T]
 		\begin{column}{0.4\textwidth}
 			\centering
-			\includegraphics<+>[width=0.85\textwidth]{figures/workflow-a.pdf}%
 			\includegraphics<+>[width=0.85\textwidth]{figures/workflow-b.pdf}%
 			\includegraphics<+>[width=0.85\textwidth]{figures/workflow-c.pdf}%
 			\includegraphics<+>[width=0.85\textwidth]{figures/workflow-d.pdf}%
 			\includegraphics<+>[width=0.85\textwidth]{figures/workflow-e.pdf}%
 		\end{column}
 		\begin{column}{0.7\textwidth}
-			\only<2>{
+			\only<1>{
 				\vspace{1em}
 				The user specifies:
 				\begin{enumerate}
@@ -396,7 +414,7 @@
 					\item The minimum acceptable performance ($P^{OK}$)
 				\end{enumerate}
 			}%
-			\only<3>{
+			\only<2>{
 				\vspace{6em}
 				Based on their input, we set:
 				\begin{enumerate}
@@ -405,7 +423,7 @@
 					\item A metric function
 				\end{enumerate}
 			}%
-			\only<4>{
+			\only<3>{
 				\vspace{11em}
 				We then tune the data generating model, so the large sample
 				performance is $P^{*}$.
@@ -441,145 +459,355 @@
 			      sample size and $P^{OK}$.
 			\item Also referred to as `learning curve
 			      fitting'\autocite{figueroa2012, dayimu2023}.
-              \item We're building on the mlpwr R package by Felix Zimmer and Rudolf Debelak CITE.
-              \emph{Simulation-based Design Optimization for Statistical Power:\ Utilizing Machine Learning} (Forthcoming, JOURNAL)
-              \item This uses Gaussian process regression.
+			\item We're building on the mlpwr R package by Felix Zimmer and
+			      Rudolf Debelak CITE. \emph{Simulation-based Design
+			      Optimization for Statistical Power:\ Utilizing Machine
+			      Learning} (Forthcoming, JOURNAL)
+			\item This uses Gaussian process regression.
 		\end{itemize}
 	\end{cbox}
 \end{frame}
 
 \begin{frame}[c]{Surrogate modelling}
 
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/surrogate_algorithm.pdf}
+	\centering
+	\includegraphics[width=0.8\textwidth]{figures/surrogate_algorithm.pdf}
 
 \end{frame}
 
+\begin{frame}[c]{Surrogate modelling}
 
-\begin{frame}[t]{Slide with graph showing how surrogate modelling works}
-
-    Ewan will add.
-
-\end{frame}
-
-\begin{frame}[t]{What is performance?}
-
-    Diana slide 1 - our criteria, how we assess them.
-
-\end{frame}
-
-\begin{frame}[t]{What is performance?}
-
-    Diana slide 2 - how our criteria compare to pmsampsize 
+    \includegraphics<+>[width=\textwidth]{figures/surrogate-1.pdf}%
+    \includegraphics<+>[width=\textwidth]{figures/surrogate-2.pdf}%
+    \includegraphics<+>[width=\textwidth]{figures/surrogate-3.pdf}%
+    \includegraphics<+>[width=\textwidth]{figures/surrogate-4.pdf}%
+    \includegraphics<+>[width=\textwidth]{figures/surrogate-5.pdf}%
+    \includegraphics<+>[width=\textwidth]{figures/surrogate-6.pdf}%
+    \includegraphics<+>[width=\textwidth]{figures/surrogate-7.pdf}%
+    \includegraphics<+>[width=\textwidth]{figures/surrogate-8.pdf}%
 
 \end{frame}
 
-\begin{frame}[t]{CRITERIA}
+\begin{frame}[t]{How do we assess performance?}
 
-	We then return the minimum sample that is within 10\% of expect large
-	sample performance in 80\% of replications.
+	We identify the minimum sample that meets \underline{two} criteria:
 
-	If we had unlimited data, what's possible? Best case. What is the sample
-	size that is sufficient to be within 10\% of this maximum achieveable.
+	\begin{cbox}{KCLpeagreen}{1.\ Discrimination}
 
-	How many replications?
+		{\large
+            Within 0.1 of the achievable performance without sample size constraints,
+            $P^*$}
 
-\end{frame}
+		\bgap
 
-\begin{frame}[t]{The user interface}
+		The choice of metric and metric can be set by users\\
+        \R{minimum_threshold = 0.1}
+        \R{metric = "auc"}
+        
 
-	\begin{itemize}
-		\item \texttt{simulate\_continuous}
-		\item \texttt{simulate\_binary}
-		\item \texttt{simulate\_survival}
-	\end{itemize}
+	\end{cbox}
 
-	Which each call:
+	\begin{cbox}{KCLseablue}{2.\ Calibration}
+        {\large
+        Within 0.1 of a calibration slope of 1.0}
 
-	\begin{itemize}
-		\item \texttt{simulate\_custom}
-	\end{itemize}
-
-\end{frame}
-
-\begin{frame}[t]{Example 1:\ Binary outcome, logistic regression }
-
-	including comparison with \texttt{pmsampsize}
+	\end{cbox}
 
 \end{frame}
 
-\begin{frame}[t]{Example 2:\ Binary outcome, LASSO regression }
+\begin{frame}[t]{Two approaches to estimating minimum samples}
+
+	\footnotesize
+	\Wider[5em]{
+		\begin{tabular}{lp{0.4\textwidth}p{0.4\textwidth}}
+			                                   & {\Large pmsims}                                                                                                     & {\Large pmsampsize}                                \\
+			Target?                            & Find training sample size such that an expected apparent and test performances are sufficiently close to each other &
+			Find sample size such that with 80\% probability test performance is above $P^{*}$                                                                                                                            \\[14mm]
+			How?                               & {\large \textcolor{KCLpurple}{Simulate}}                                                                            & {\large \textcolor{KCLhotpink}{Uniform shrinkage}} \\
+			                                   &
+			\begin{minipage}[t]{0.4\textwidth}
+				\begin{itemize}
+					\item Tune data generator to an expected achievable
+					      performance.
+					\item Sample training data of different sizes, compute
+					      performance metrics. Using mlpwr find n at which 0.2
+					      quantile of test performances achieves Pok.
+					\item NB pmsims handles calibration slope as a performance
+					      measure, which is the same as uniform shrinkage, as
+					      slope is defined as minimizing the error between
+					      $y^{test}$ and ($\alpha + slope \times
+					      \hat{y}^{test}$).
+				\end{itemize}
+			\end{minipage} &
+			\begin{minipage}[t]{0.4\textwidth}
+				\begin{itemize}
+					\item Consider GLM models, where estimates depend on a
+					      linear predictor, $x^{T}\hat{\beta}$, with
+					      $\hat{\beta}-$ OLS/ML estimates from the training
+					      sample.
+					\item Using $s \cdot x^{T}\hat{\beta}$, instead of
+					      $x^{T}\hat{\beta}$ may prevent overfitting and
+					      perform better on unseen cases.
+				\end{itemize}
+			\end{minipage}
+		\end{tabular}
+	}
+
+	Diana slide 2 - how our criteria compare to pmsampsize
 
 \end{frame}
 
-\begin{frame}[t]{Example 3:\ Custom model function}
+\begin{frame}[t]
+	\footnotesize
+	\Wider[5em]{
+		\begin{tabular}{p{0.5\textwidth}p{0.5\textwidth}}
+			{\Large pmsims} & {\Large pmsampsize} \\
+			\begin{minipage}[t]{0.4\textwidth}
+				\begin{itemize}
+					\item Targets absolute performance
+					\item Flexible, handles machine learning or multilevel
+					      models, etc.
+					      % heteroscedasticity and multicollinearity in the data
+					\item Does not aim to prevent overfitting per se
+					\item Targets test performance itself *
+					\item Adjusts recommendations to the test performance
+					      variance **
+				\end{itemize}
+				However:\
+				\begin{itemize}
+					\item Takes time / computational resources
+					\item Requires user input including the prediction model
+					      and/or data generator for complex designs
+					\item Depends on simulations, so variability of results is
+					      expected
+				\end{itemize}
 
-	\texttt{simulate\_custom}
+			\end{minipage}
+		\end{tabular}
+	}
+\end{frame}
 
-	XGBoost
+\begin{frame}[c,fragile]{The user interface}
+
+	\vspace{1em}
+	\centering
+	\includegraphics[width=0.9\textwidth]{figures/interfaces.pdf}%
+	\vspace{-1.5em}
+
+	\begin{columns}
+		\begin{column}[t]{0.55\textwidth}
+			\begin{cbox}{gray}{}
+				\begin{minted}[autogobble,fontsize=\small]{r}
+simulate_continuous <- 
+  function(
+    signal_parameters = 30,
+    noise_parameters = 0,
+    min_sample_size = 300,
+    max_sample_size = 10000,
+    large_discrimination = 0.7,
+    minimum_threshold = 0.1,
+    model = "lm",
+    metric = "r2",
+    ...
+  ) 
+            \end{minted}
+			\end{cbox}
+		\end{column}
+		\begin{column}[t]{0.55\textwidth}
+			\begin{cbox}{gray}{}
+				\begin{minted}[autogobble,fontsize=\small]{r}
+simulate_binary <- 
+  function(
+    signal_parameters = 30,
+    noise_parameters = 0,
+    baseline_prob = 0.1,
+    min_sample_size = 300,
+    max_sample_size = 10000,
+    large_discrimination = 0.8,
+    minimum_threshold = 0.1,
+    metric = "auc",
+    model = "glm",
+    ...
+  )
+            \end{minted}
+			\end{cbox}
+		\end{column}
+	\end{columns}
 
 \end{frame}
 
-\begin{frame}[t]{Maybe put slide with simulations here?}
+\begin{frame}[b,fragile]{Example 1:\ Binary outcome, logistic regression}
+	\Wider{
+		\includegraphics[width=0.9\textwidth]{figures/demo1.pdf}%
+	}
 
-	With our package we can replicate other criteria.
-
-	How would it look if we included pmsampsize criteria within pmsims
-	framework?
-
-	For example, shrinkage from \texttt{pmsampsize}:
-
-	DEMO
-
-	We can accomodate any.
-\end{frame}
-
-\begin{frame}[t]{Development status}
-	Package in development; functioning, but more testing needed.
-
-	\begin{itemize}
-		\item Follow
-		      \href{https://fediscience.org/@ewan}{\textcolor{KCLseablue}{fediscience.org/@ewan}}
-		      for updates.
-		\item Or enter an email address at
-		      \href{https://tinyurl.com/pmsims-announce}{\textcolor{KCLseablue}{tinyurl.com/is-it-ready-yet}}
-		      to get one email when a public release is available.
-	\end{itemize}
-
-	Please come and talk to us.
-
-	Criteria/models/etc. all subject to change.
+	\tikz[overlay, remember picture]
+	\node[anchor=north east, yshift=-0.9cm] at (current page.north east) {
+		\begin{cbox}[width=4.8cm]{gray}{}%
+			\begin{minted}[autogobble,fontsize=\scriptsize]{r}
+simulate_binary(
+  signal_parameters = 20,
+  baseline_prob = 0.1,
+  min_sample_size = 500,
+  max_sample_size = 15000,
+  large_discrimination = ...,
+  minimum_threshold = 0.1,
+  metric = "auc",
+  model = "glm",
+)
+            \end{minted}
+		\end{cbox}
+	};
 
 \end{frame}
 
-\begin{frame}[t]{What's next? (1/2)}
+\begin{frame}[b,fragile]{Example 2:\ Binary outcome, LASSO regression}
 
-\begin{cbox}{KCLtealblue}{1.\ Machine learning}{}
+    \Wider{
+    \includegraphics[width=0.9\textwidth]{figures/demo2.pdf}%
+}
 
-\end{tcolorbox}
+	\tikz[overlay, remember picture]
+	\node[anchor=north east, yshift=-0.9cm] at (current page.north east) {
+		\begin{cbox}[width=4.8cm]{gray}{}%
+			\begin{minted}[%
+                highlightlines=9,
+                autogobble,
+                fontsize=\scriptsize]{r}
+simulate_binary(
+  signal_parameters = 20,
+  baseline_prob = 0.1,
+  min_sample_size = 500,
+  max_sample_size = 15000,
+  large_discrimination = ...,
+  minimum_threshold = 0.1,
+  metric = "auc",
+  model = "lasso",
+)
+            \end{minted}
+		\end{cbox}
+	};
 
-\begin{cbox}{KCLpurple}{2.\ Longitudinal data}{}
-
-\end{tcolorbox}
 
 \end{frame}
 
-\begin{frame}[t]{What's next? (2/2)}
+\begin{frame}[c,fragile]{Example 3:\ Custom model function}
 
-\begin{cbox}{KCLseablue}{3.\ Common data types}{}
-e.g., clinical, NLP, genetic.
+	What if a model hasn't been implemented?%
+    \vspace{-0.5em}%
 
-\end{tcolorbox}
+	\begin{columns}
+		\begin{column}[T]{0.5\textwidth}
+			\begin{cbox}{gray}{}%
+				\begin{minted}[autogobble,fontsize=\scriptsize]{r}
+model_function <- function(d) {
+  dmat <- xgboost::xgb.DMatrix(
+    as.matrix(d[, -1]),
+    label = d[, 1]
+  )
+  param <- list(
+    objective = "binary:logistic",
+    booster = "gblinear",
+    alpha = 0.0001,
+    lambda = 1
+  )
+  xgboost::xgb.train(
+    param,
+    dmat,
+    nrounds = 2
+  )
+}
+            \end{minted}
+			\end{cbox}
 
-\begin{cbox}{KCLhotpink}{4.\ Performance}{}
+		\end{column}
+		\begin{column}[T]{0.55\textwidth}
+			\begin{cbox}{gray}{}%
+				\begin{minted}[%
+                autogobble,
+                fontsize=\scriptsize]{r}
+metric_function <- function(data,
+                            fit,
+                            model) {
+  dmat <- xgboost::xgb.DMatrix(
+    as.matrix(data[, -1]), 
+    label = data[, 1]
+  )
+  y_hat <- predict(fit, dmat)
+  pROC::auc(data[, 1], y_hat)[1]
+}
+            \end{minted}
+			\end{cbox}
 
-\end{tcolorbox}
+			\begin{cbox}{gray}{}%
+				\begin{minted}[%
+                highlightlines=2-4,
+                autogobble,
+                fontsize=\scriptsize]{r}
+simulate_custom(
+  data_function = data_function,
+  model_function = model_function,
+  metric_function = metric_function,
+  ...
+)
+            \end{minted}
+			\end{cbox}
+		\end{column}
+	\end{columns}
 
 \end{frame}
 
 \section{Conclusion}
 
-\begin{frame}
+\begin{frame}[t]{Development status}
+
+	\sgap
+	We're currently developing the package.%
+	\vspace{1em}
+
+	% Say: it works, but more testing needed.
+
+	\begin{tabular}{cp{0.8\textwidth}}
+		\includegraphics[width=2em,valign=c]{figures/mastodon.pdf} &
+		\href{https://fediscience.org/@ewan}{\textcolor{KCLhotpink}{fediscience.org/@ewan}}
+		for updates                                                  \\[1.7em]
+		\includegraphics[width=2em,valign=c]{figures/email.pdf} & \textcolor{KCLhotpink}{ewan.carr@kcl.ac.uk}\\[1.7em]
+		\includegraphics[width=2em,valign=c]{figures/bell.pdf}    &
+		Enter email at
+		\href{https://tinyurl.com/is-pmsims-ready-yet}{\textcolor{KCLhotpink}{tinyurl.com/is-pmsims-ready-yet}}
+		to get one email when a public release is available.         \\[1.7em]
+		\includegraphics[width=2em,valign=c]{figures/hi.pdf}       &
+		Come and talk to us.
+	\end{tabular}
+
+	% Say: criteria/models are subject to change.
+
+\end{frame}
+
+\begin{frame}[t]{What's next?}
+
+\begin{cbox}{KCLtealblue}{1.\ Machine learning}{}
+
+\end{cbox}
+
+\begin{cbox}{KCLpurple}{2.\ Longitudinal data}{}
+
+\end{cbox}
+
+\begin{cbox}{KCLseablue}{3.\ Common data types}{}
+e.g., clinical, NLP, genetic.
+
+\end{cbox}
+
+\begin{cbox}{KCLhotpink}{4.\ Performance}{}
+
+\end{cbox}
+
+\end{frame}
+
+
+\begin{frame}[c]
+    \centering
 	Thank you for listening.
 \end{frame}
 
