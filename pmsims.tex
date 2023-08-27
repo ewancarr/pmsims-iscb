@@ -1,5 +1,6 @@
 \documentclass[11pt]{beamer}
 \usepackage{booktabs}
+\usepackage{amsmath}
 \usepackage{array}
 \usepackage{eulervm}
 \usepackage{tcolorbox}
@@ -8,6 +9,10 @@
 \usepackage{minted}
 \usemintedstyle{gruvbox-light}
 \newcommand{\R}[1]{\mintinline[escapeinside=||]{r}{#1}}
+
+\newcommand*{\colitem}[2]{%
+    \item[\textcolor{#1}{\textbullet}] \textcolor{#1}{#2}
+}
 
 \newcommand{\sgap}{\vspace{0.5em}}
 \newcommand{\bgap}{\vspace{0.8em}}
@@ -37,7 +42,7 @@
 % References ------------------------------------------------------------------
 
 \usepackage[%
-  backend     = bibtex,
+  backend     = biber,
   style       = numeric,
   sorting     = ynt,
   sortcites   = true,
@@ -200,6 +205,8 @@
 	% Say: Prediction models can inform treatment decisions, facilitate
 	% screening, and enable stratified care.
 
+    % risk stratification, informing, shared decision making
+
 	Hundreds of prediction models are developed each year. Most have
 	inadequate samples.
 
@@ -285,63 +292,50 @@
 \end{frame}
 
 \begin{frame}[c]{We \img{figures/heart.png} pmsampsize, but\ldots}
-	\large
 
-	pmsampsize provides methods for continuous, binary, and survival
-	outcomes. But we increasingly need to estimate minimum samples for:
-
-	\begin{cbox}{KCLtealblue}{Other models}
-		\begin{itemize}
-			\item Regularised regression (e.g., LASSO, elastic net)
-			\item Machine learning algorithms (e.g., random forests, gradient
-			      boosting)
-		\end{itemize}
-	\end{cbox}
-
-	\begin{cbox}{KCLhotpink}{Other types of data}{}
-		\begin{itemize}
-			\item Longitudinal and repeated measures
-			\item Clustered data
-		\end{itemize}
-	\end{cbox}
-
-	We're creating a simulation-based framework to estimate sample sizes for
-	prediction.
-
-\end{frame}
-
-\begin{frame}[t]{The \alert{pmsims} package for R}
-
-	Key features:
-
+    \large
+	We increasingly need to estimate minimum samples for:\ \sgap
 	\begin{itemize}
-		\item Able to estimate minimum sample sizes for \alert{any model or
-		      data type};
-		\item Provides defaults for common model and data types;
-		\item Efficient estimation.
+        \colitem{KCLpurple}{\textbf{Other models} (e.g., machine learning algorithms, random
+			forests, gradient boosting);}
+            \colitem{KCLseablue}{\textbf{Other data types} (e.g., longitudinal, clustered)}
 	\end{itemize}
 
-	This last point is key:\ most machine learning approaches are too
-	computationally demanding for conventional simulation approaches.
+	\sgap
+	$\rightarrow$~
+	\begin{minipage}[t]{0.95\textwidth}
+		We're creating a simulation-based framework to estimate sample sizes for
+		prediction.
+	\end{minipage}
+	\bgap
+
+    \Wider{
+	\begin{cbox}{KCLhotpink}{The pmsims package for R}
+		\begin{tabular}{rp{0.8\textwidth}}
+			\textbf{Flexible}   & Any model or data type                                \\
+			\textbf{Accessible} & Defaults for common scenarios; user-friendly \\
+			\textbf{Fast}       & Efficient estimation via surrogate modelling
+		\end{tabular}
+	\end{cbox}
+}
 
 \end{frame}
 
 \begin{frame}[t]{Our approach}
-
-	\begin{cbox}{KCLpeagreen}{Setting}
+    \vspace{0.5em}
+    \begin{cbox}[bottom=4mm]{KCLpeagreen}{Setting}
 		\begin{enumerate}
 			\setlength{\itemsep}{7pt}
-			\item A study population represented by outcome-related individual
+            \item A \textbf{study population} represented by outcome-related individual
 			      characteristics (i.e., candidate predictors).
-			\item A chosen statistical or machine learning model.
-			\item Expected achievable performance (e.g., $R^2$, AUC) without
-			      sample size constraints, $P^{*}$.
-			\item Minimum acceptable performance of the model, $P^{OK}$.
+              \item A chosen statistical or machine learning \textbf{model}.
+              \item Expected achievable \textbf{large-sample performance} (e.g., $R^2$, AUC), $P^{*}$, given population and model.
+              \item Minimum \textbf{acceptable test performance} of the model, $P^{OK}$.
 		\end{enumerate}
 	\end{cbox}
 
-	\onslide<2>
-	\bgap
+	\onslide<2->
+	\sgap
 	\centering
 	\includegraphics[height=3.6em]{figures/target.pdf}
 	\hspace{0.7em}
@@ -361,12 +355,13 @@
 	\begin{columns}[T]
 		\begin{column}{0.4\textwidth}
 			\centering
+			\includegraphics<+>[width=0.85\textwidth]{figures/workflow-a.pdf}%
 			\includegraphics<+>[width=0.85\textwidth]{figures/workflow-b.pdf}%
 			\includegraphics<+>[width=0.85\textwidth]{figures/workflow-c.pdf}%
 			\includegraphics<+>[width=0.85\textwidth]{figures/workflow-d.pdf}%
-			\includegraphics<+>[width=0.85\textwidth]{figures/workflow-e.pdf}%
 		\end{column}
 		\begin{column}{0.7\textwidth}
+            \large
 			\only<1>{
 				\vspace{1em}
 				The user specifies:
@@ -378,17 +373,17 @@
 				\end{enumerate}
 			}%
 			\only<2>{
-				\vspace{6em}
+				\vspace{5.5em}
 				Based on their input, we set:
 				\begin{enumerate}
-					\item A data generating function
+					\item A data-generating function
 					\item A model function
 					\item A metric function
 				\end{enumerate}
 			}%
 			\only<3>{
-				\vspace{11em}
-				We then tune the data generating model, so the large sample
+				\vspace{10em}
+				We tune the data generating model, so the large sample
 				performance is $P^{*}$.
 			}
 		\end{column}
@@ -414,12 +409,12 @@
 			% investigate with a cheaper function.
 
 			\begin{itemize}
-				\item Approximates relationship between sample size and
-				      $P^{OK}$ using Guassian process regression.
+				\item Approximates the relationship between sample size and
+				      $P^{OK}$ using Gaussian process regression.
 				\item Also referred to as `learning curve
 				      fitting'\autocite{figueroa2012, dayimu2023}.
 				\item Uses the mlpwr R package by Zimmer and
-				      Debelak\autocite{zimmer2022}.
+				      Debelak\autocite{Zimmer.inpress}.
 			\end{itemize}
 		\end{cbox}
 
@@ -429,87 +424,100 @@
 	}
 \end{frame}
 
-\begin{frame}[c]{Surrogate modelling}
+\begin{frame}[c]{}
+	\Wider[2em]{
+		\includegraphics<+>[width=\textwidth]{figures/surrogate-1.pdf}%
+		\includegraphics<+>[width=\textwidth]{figures/surrogate-3.pdf}%
+		\includegraphics<+>[width=\textwidth]{figures/surrogate-4.pdf}%
+		\includegraphics<+>[width=\textwidth]{figures/surrogate-5.pdf}%
+		\includegraphics<+>[width=\textwidth]{figures/surrogate-6.pdf}%
+	}
 
-	\includegraphics<+>[width=\textwidth]{figures/surrogate-1.pdf}%
-	\includegraphics<+>[width=\textwidth]{figures/surrogate-3.pdf}%
-	\includegraphics<+>[width=\textwidth]{figures/surrogate-4.pdf}%
-	\includegraphics<+>[width=\textwidth]{figures/surrogate-5.pdf}%
-	\includegraphics<+>[width=\textwidth]{figures/surrogate-6.pdf}%
-	\includegraphics<+>[width=\textwidth]{figures/surrogate-7.pdf}%
-	\includegraphics<+>[width=\textwidth]{figures/surrogate-8.pdf}%
+\end{frame}
 
+\begin{frame}[t]{What is the performance of a prediction model?}
+	\includegraphics[width=\textwidth]{figures/performance_flow.pdf}%
+
+	\textbf{Apparent vs. Test performance (or ``actual'' performance):}
+
+	\begin{itemize}
+		\item Train and test performances are random variables of the drawn
+		      training sample
+		\item Test performance is expected to be worse than apparent; less
+		      with higher n.
+		\item Prediction model is as good as its test performance
+	\end{itemize}
+
+	\includegraphics[width=\textwidth]{figures/diana-auc.pdf}%
 \end{frame}
 
 \begin{frame}[t]{How do we assess performance?}
 
-	\Wider{
-		\includegraphics[width=\textwidth]{figures/performance_flow.pdf}%
+	We identify the minimum sample that meets \underline{two} criteria:
 
-		We identify the minimum sample that meets \underline{two} criteria:
+	\begin{cbox}{KCLpeagreen}{}
+		{\large
+			\textbf{1.\ Overall fit} \\
+			Within 0.1 of the achievable large sample fit (e.g., $R^2$, Brier score).
+        }
+	\end{cbox}
 
-		\begin{cbox}{KCLpeagreen}{}
-			{\large
-				\textbf{1.\ Discrimination} \\
+	\begin{cbox}{KCLpeagreen}{}
+		{\large
+			\textbf{2.\ Discrimination} \\
+			Within 0.1 of the achievable large sample discrimination (e.g., Concordance statistic, AUC).
+        }
+	\end{cbox}
 
-				Within 0.1 of the achievable large sample discrimination,
-				$P^*$. }
+	\begin{cbox}{KCLpantone}{}
+		{\large
+			\textbf{3.\ Calibration slope} \\
 
-			\bgap
+			A calibration slope of 0.9 to 1.1.}
+	\end{cbox}
 
-			The threshold and metric can be chosen by users.
-		\end{cbox}
-
-		\begin{cbox}{KCLpantone}{}
-			{\large
-				\textbf{2.\ Calibration} \\
-
-				A calibration slope of 0.9 to 1.1.}
-		\end{cbox}
-
-		But we're open to suggestions. }
+	The threshold and metric are user-configurable.
 
 \end{frame}
+
 
 \begin{frame}[t]{Two approaches to estimating minimum samples}
 
 	\footnotesize
 	\Wider[5em]{
 		\begin{tabular}{lp{0.4\textwidth}p{0.4\textwidth}}
-			                                   & {\Large \textcolor{KCLpurple}{pmsims}}                                                                 & {\Large \textcolor{KCLhotpink}{pmsampsize}}        \\
-			Target?                            & Minimum development sample that ensures expected apparent and test performances are sufficiently close &
-			Minimum development sample that ensures test performance of $P^{OK}$ with 80\% probability                                                                                                       \\[14mm]
-			How?                               & {\large \textcolor{KCLpurple}{Simulate}}                                                               & {\large \textcolor{KCLhotpink}{Uniform shrinkage}} \\
-			                                   &
+             & {\Large \textcolor{KCLpurple}{pmsims}} & {\Large \textcolor{KCLhotpink}{pmsampsize}}    \\[4mm]
+            Target? & Minimum development sample that ensures expected apparent and test performances are sufficiently close. &
+			Minimum development sample that ensures test performance of $P^{OK}$ with 80\% probability. \\[5mm]
+			How?                               & \textcolor{KCLpurple}{Simulate absolute test performance}
+			& \textcolor{KCLhotpink}{Analytical closeness of test vs.\ train performance} \\
+			&
 			\begin{minipage}[t]{0.4\textwidth}
-				\begin{itemize}
-					\item Tune data generator to an expected achievable
-					      performance.
-					\item Sample training data of different sizes, compute
-					      performance metrics. Using mlpwr find n at which 0.2
-					      quantile of test performances achieves Pok.
-					\item NB pmsims handles calibration slope as a performance
-					      measure, which is the same as uniform shrinkage, as
-					      slope is defined as minimizing the error between
-					      $y^{test}$ and ($\alpha + slope \times
-					      \hat{y}^{test}$).
-				\end{itemize}
+			\begin{itemize}
+				\item Tune data generator to an expected achievable performance.
+				\item For training data of different sizes, use mlpwr to find n at which
+				      80\% of test performances achieves $P^{OK}$.
+				      \item Calibration slope criterion is similar to uniform shrinkage criterion
+                          (slope is defined as minimizing the error between
+				            $y^{test}$ and ($\alpha + slope \times
+				            \hat{y}^{test}$).
+			\end{itemize}
 			\end{minipage} &
 			\begin{minipage}[t]{0.4\textwidth}
 				\begin{itemize}
-					\item Consider GLM models, where estimates depend on a
-					      linear predictor, $x^{T}\hat{\beta}$, with
-					      $\hat{\beta}-$ OLS/ML estimates from the training
-					      sample.
-					\item Using $s \cdot x^{T}\hat{\beta}$, instead of
-					      $x^{T}\hat{\beta}$ may prevent overfitting and
-					      perform better on unseen cases.
-				\end{itemize}
+			\item Consider GLM models, where estimates depend on a
+			      linear predictor, $x^{T}\hat{\beta}$, with
+			      $\hat{\beta}-$ OLS/ML estimates from the training
+			      sample.
+			\item Using $s \cdot x^{T}\hat{\beta}$, instead of
+			      $x^{T}\hat{\beta}$ may prevent overfitting and
+			      perform better on unseen cases.
+              \item e.g.\ for linear regression, $s = \frac{SS^{exp}-p\cdot\hat{\sigma}^2}{SS^{exp}}, $p-1$ predictors, $\hat{\sigma}^2$ sampled variance, $SS^{exp}$ explained sum of squares.
+			\end{itemize}
 			\end{minipage}
 		\end{tabular}
 	}
-
-	Diana slide 2 - how our criteria compare to pmsampsize
+    FIX THE HATS
 
 \end{frame}
 
@@ -579,7 +587,7 @@
 
 		\vspace{5em}
 		\centering
-		Diana figure here.
+        \includegraphics[width=\textwidth]{figures/diana-auc.pdf}%
 	}
 
 \end{frame}
@@ -654,7 +662,7 @@ simulate_binary(
 )
             \end{minted}
 		\end{cbox}
-	}2
+	};
 
 \end{frame}
 
@@ -775,7 +783,15 @@ simulate_custom(
 		\end{tabular}
 	\end{cbox}
 
-	\begin{cbox}{gray}{Next steps}
+    Next steps:\ 
+
+    \begin{enumerate}
+        \item[\{KCLpurple}{Data and model generators for common machine
+            learning algorithms}
+        \colitem{KCLpurple}{\ldots for longitudinal and clustered data.}
+    \end{enumerate}
+
+	\begin{cbox}{white}{Next steps}
 		\begin{columns}
 			\begin{column}[T]{0.45\textwidth}
 				\begin{enumerate}
@@ -797,26 +813,43 @@ simulate_custom(
 
 \end{frame}
 
+\begin{frame}[t]{What's next?}
+\begin{cbox}{KCLtealblue}{1.\ Machine learning}{}
+
+\end{cbox}
+
+\begin{cbox}{KCLpurple}{2.\ Longitudinal data}{}
+
+\end{cbox}
+
+\begin{cbox}{KCLseablue}{3.\ Common data types}{}
+    e.g., clinical, NLP, genetic.
+
+\end{cbox}
+
+\begin{cbox}{KCLhotpink}{4.\ Performance}{}
+
+\end{cbox}
+
+\end{frame}
+
 \begin{frame}[t]
 	\centering
 	\vspace{0.4\textheight}
 	Thank you for listening.
 	\vfill
-	\centering
-	\begin{columns}
-		\begin{column}[c]{0.45\textwidth}
-			\includegraphics[width=1.5em,valign=c]{figures/email.pdf}%
-			\hspace{0.8em}%
-			\textcolor{KCLhotpink}{ewan.carr@kcl.ac.uk}\\[1.7em]
-		\end{column}
-		\begin{column}[c]{0.45\textwidth}
-			\includegraphics[width=1.5em,valign=c]{figures/mastodon.pdf}
-			\hspace{0.8em}%
-			\href{https://fediscience.org/@ewan}{\textcolor{KCLhotpink}{fediscience.org/@ewan}}
-		\end{column}
-	\end{columns}
-
-\end{frame}
+    \begin{tabular}{cl}
+        \includegraphics[width=1.5em,valign=c]{figures/email.pdf} & \textcolor{KCLhotpink}{ewan.carr@kcl.ac.uk}\\[1.7em] 
+        \includegraphics[width=1.5em,valign=c]{figures/mastodon.pdf} & \href{https://fediscience.org/@ewan}{\textcolor{KCLhotpink}{fediscience.org/@ewan}} \\[1.7em]
+    
+    \end{tabular}
+		\includegraphics[width=1.5em,valign=c]{figures/email.pdf}%
+		\hspace{0.8em}%
+		\textcolor{KCLhotpink}{ewan.carr@kcl.ac.uk}\\[1.7em]
+		\includegraphics[width=1.5em,valign=c]{figures/mastodon.pdf}
+		\hspace{0.8em}%
+		\href{https://fediscience.org/@ewan}{\textcolor{KCLhotpink}{fediscience.org/@ewan}}
+end{frame}
 
 \appendix
 
