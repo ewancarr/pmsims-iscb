@@ -91,6 +91,41 @@
   file = {/Users/ewan/Zotero/storage/I6UMSBFH/Navarro et al. - 2021 - Risk of bias in studies on prediction models devel.pdf}
 }
 
+@article{riley2021,
+  title = {Penalization and Shrinkage Methods Produced Unreliable Clinical Prediction Models Especially When Sample Size Was Small},
+  author = {Riley, Richard D. and Snell, Kym I. E. and Martin, Glen P. and Whittle, Rebecca and Archer, Lucinda and Sperrin, Matthew and Collins, Gary S.},
+  year = {2021},
+  month = apr,
+  journal = {Journal of Clinical Epidemiology},
+  volume = {132},
+  pages = {88--96},
+  issn = {1878-5921},
+  doi = {10.1016/j.jclinepi.2020.12.005},
+  abstract = {OBJECTIVES: When developing a clinical prediction model, penalization techniques are recommended to address overfitting, as they shrink predictor effect estimates toward the null and reduce mean-square prediction error in new individuals. However, shrinkage and penalty terms ('tuning parameters') are estimated with uncertainty from the development data set. We examined the magnitude of this uncertainty and the subsequent impact on prediction model performance. STUDY DESIGN AND SETTING: This study comprises applied examples and a simulation study of the following methods: uniform shrinkage (estimated via a closed-form solution or bootstrapping), ridge regression, the lasso, and elastic net. RESULTS: In a particular model development data set, penalization methods can be unreliable because tuning parameters are estimated with large uncertainty. This is of most concern when development data sets have a small effective sample size and the model's Cox-Snell R2 is low. The problem can lead to considerable miscalibration of model predictions in new individuals. CONCLUSION: Penalization methods are not a 'carte blanche'; they do not guarantee a reliable prediction model is developed. They are more unreliable when needed most (i.e., when overfitting may be large). We recommend they are best applied with large effective sample sizes, as identified from recent sample size calculations that aim to minimize the potential for model overfitting and precisely estimate key parameters.},
+  langid = {english},
+  pmcid = {PMC8026952},
+  pmid = {33307188},
+  keywords = {Bias,Epidemiologic Research Design,Humans,{Models, Statistical},Overfitting,Penalization,Prognosis,Reproducibility of Results,Risk prediction models,Sample size,Sample Size,Shrinkage,Uncertainty},
+  file = {/Users/ewan/Zotero/storage/FP6ULKFW/Riley et al. - 2021 - Penalization and shrinkage methods produced unreli.pdf}
+}
+
+@article{vanhouwelingen1990a,
+  title = {Predictive Value of Statistical Models},
+  author = {Van Houwelingen, J. C. and Le Cessie, S.},
+  year = {1990},
+  month = nov,
+  journal = {Statistics in Medicine},
+  volume = {9},
+  number = {11},
+  pages = {1303--1325},
+  issn = {0277-6715},
+  doi = {10.1002/sim.4780091109},
+  abstract = {A review is given of different ways of estimating the error rate of a prediction rule based on a statistical model. A distinction is drawn between apparent, optimum and actual error rates. Moreover it is shown how cross-validation can be used to obtain an adjusted predictor with smaller error rate. A detailed discussion is given for ordinary least squares, logistic regression and Cox regression in survival analysis. Finally, the splitsample approach is discussed and demonstrated on two data sets.},
+  langid = {english},
+  pmid = {2277880},
+  keywords = {Calibration,Female,Graft Survival,Humans,Kidney Transplantation,Least-Squares Analysis,{Models, Statistical},Ovarian Neoplasms,Prognosis,Regression Analysis,Survival Analysis}
+}
+
 @article{vansmeden2016,
   title = {No Rationale for 1 Variable per 10 Events Criterion for Binary Logistic Regression Analysis},
   author = {{van Smeden}, Maarten and {de Groot}, Joris A. H. and Moons, Karel G. M. and Collins, Gary S. and Altman, Douglas G. and Eijkemans, Marinus J. C. and Reitsma, Johannes B.},
@@ -127,4 +162,19 @@
   langid = {english},
   pmid = {32265220},
   file = {/Users/ewan/Zotero/storage/HT38RX2F/Wynants et al. - 2020 - Prediction models for diagnosis and prognosis of c.pdf}
+}
+
+@misc{zimmer2022,
+  title = {Simulation-Based {{Design Optimization}} for {{Statistical Power}}: {{Utilizing Machine Learning}}},
+  shorttitle = {Simulation-Based {{Design Optimization}} for {{Statistical Power}}},
+  author = {Zimmer, Felix and Debelak, Rudolf},
+  year = {2022},
+  month = mar,
+  publisher = {{PsyArXiv}},
+  doi = {10.31234/osf.io/tnhb2},
+  urldate = {2023-03-31},
+  abstract = {The planning of adequately powered research designs increasingly goes beyond determining a suitable sample size. More challenging scenarios demand simultaneous tuning of multiple design parameter dimensions and can only be addressed using Monte Carlo simulation if no analytical approach is available. In addition, cost considerations, e.g., in terms of monetary costs, are a relevant target for optimization. In this context, optimal design parameters can imply a desired level of power at minimum cost or maximum power at a cost threshold. We introduce a surrogate modeling framework based on machine learning predictions to solve these optimization tasks. In a simulation study, we demonstrate the efficiency for a wide range of hypothesis testing scenarios with single- and multidimensional design parameters, including t-tests, ANOVA, item response theory models, and multilevel models. Our implementation is publicly available in an R package.},
+  langid = {american},
+  keywords = {machine learning,power analysis,Quantitative Methods,sample size,simulation,Social and Behavioral Sciences},
+  file = {/Users/ewan/Sync/Work/Literature/Journal articles/PsyArXiv/2022/Zimmer_Debelak_2022_Simulation-based Design Optimization for Statistical Power.pdf}
 }

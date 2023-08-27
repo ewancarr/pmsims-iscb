@@ -94,11 +94,11 @@
     }%
 }
 
-\title[The \texttt{pmsims} package for R]{
+\title[The pmsims package for R]{
     A simulation approach to calculating minimum sample sizes for prediction
     modelling
 }
-\subtitle{The \texttt{pmsims} package for R}
+\subtitle{The pmsims package for R}
 \date{29$^{\text{th}}$ August 2023}
 \author[Biostatistics \& Health Informatics, KCL]{%
 	Ewan Carr, Gordon Forbes, Diana Shamsutdinova, Daniel Stahl,
@@ -165,7 +165,8 @@
 \end{frame}
 
 \begin{frame}[t]{This talk}
-	\large
+    \sgap
+	\Large
 	\begin{enumerate}
 		\item Background
 		      \begin{itemize}
@@ -181,22 +182,13 @@
 		\item Development status and next steps
 	\end{enumerate}
 
-	\bgap
-	\centering
-	\begin{cbox}{KCLhotpink}{}
-		\begin{columns}
-			\begin{column}[c]{0.6\textwidth}
-				We're still developing the package.
-
-				Your feedback is welcome.
-
-				Please get in touch.
-			\end{column}
-			\begin{column}[c]{0.3\textwidth}
-				\centering
-				\includegraphics[width=\linewidth]{figures/roadwork-sign.png}
-			\end{column}
-		\end{columns}
+    \onslide<2->
+    \normalsize
+	\vspace{6mm}
+	\begin{cbox}{KCLtealblue}{}
+		\centering
+		\includegraphics[width=4em,valign=c]{figures/construction-site.pdf}
+		\hspace{2em} {\large Under construction; feedback welcome.}
 	\end{cbox}
 
 \end{frame}
@@ -257,75 +249,46 @@
 
 \end{frame}
 
-\begin{frame}[t]{What tools currently exist?}
+\begin{frame}[t]{What tools exist?}
 
 	\centering
 	\begin{columns}
 		\begin{column}[c]{0.6\textwidth}
 			\centering
 			Most studies ignore sample size.
+			\bgap%
+
+			Or use rules of thumb (e.g., 10 events per variable) that have no
+			rationale in prediction modelling\autocite{vansmeden2016}.
 		\end{column}
-		\begin{column}[c]{0.35\textwidth}
-			\includegraphics[width=\textwidth]{figures/bury-head.png}
+		\begin{column}[c]{0.4\textwidth}
+			\includegraphics[width=\textwidth]{figures/bury-head.png}%
 		\end{column}
 	\end{columns}
 
-	\vspace{3em}
-
-	Or use rules of thumb (e.g., 10 events per variable) that have no
-	rationale in prediction modelling\autocite{vansmeden2016}.
-
-	% However, this rule of thumb has been shown to have no rationale, especially
+	% This rule of thumb has been shown to have no rationale, especially
 	% in prediction model research, as its evidence base is mainly informed by
 	% simulation studies that investigate the performance of estimating
 	% covariate-outcome relationships.
 	% https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/s12874-023-02008-1
+    \bgap
 
-	\vspace{3em}
-	In 2018, Riley et al released \texttt{pmsampsize} for R and Stata.
-
-\end{frame}
-
-\begin{frame}[t]{\texttt{pmsampsize}}
 	\begin{columns}
 		\begin{column}[c]{0.5\textwidth}
-
+			\includegraphics[width=\textwidth]{figures/riley2.png}%
 		\end{column}
 		\begin{column}[c]{0.5\textwidth}
-			\includegraphics[width=\textwidth]{figures/riley2.png}
-
+            In 2018, Riley et al.\ released \alert{pmsampsize} for R and Stata.
 		\end{column}
 	\end{columns}
-
-	pmsampsize has methods for simple continuous, binary, and survival
-	outcome.
-
-\end{frame}
-
-\begin{frame}{pmsampsize}
-
-	The package identifies the minimum sample that results in: \\[1em]
-
-	\centering
-
-	\begin{tabular}{l>{\raggedright\arraybackslash}p{12em}>{\raggedright\arraybackslash}p{12em}}
-		           & \textbf{Continuous}                                          & \textbf{Binary} \\ \midrule
-		i.         & \multicolumn{2}{p{24em}}{Small optimism in predictor effect
-		estimates, indicated by a global shrinkage factor of ≥ 0.9.}                                \\ \midrule
-		ii.        & \multicolumn{2}{p{20em}}{Small absolute difference of ≤ 0.05
-		in the apparent and adjusted $R^2$}                                                         \\ \midrule
-		iii.       & Precise estimation of the model's residual standard
-		deviation. & Precise estimation of the overall risk in the
-		population.                                                                                 \\ \midrule
-		iv.        & Precise estimation of the model intercept.                   &                 \\
-	\end{tabular}
 
 \end{frame}
 
 \begin{frame}[c]{We \img{figures/heart.png} pmsampsize, but\ldots}
 	\large
 
-	We increasingly need to estimate minimum samples for:
+	pmsampsize provides methods for continuous, binary, and survival
+	outcomes. But we increasingly need to estimate minimum samples for:
 
 	\begin{cbox}{KCLtealblue}{Other models}
 		\begin{itemize}
@@ -434,84 +397,77 @@
 \end{frame}
 
 \begin{frame}[t]{Performing the search}
+	\tikz[overlay, remember picture]
+	\node[%
+		anchor=north east,
+		yshift=0.2cm,
+		xshift=-0.5cm]at (current page.north east) {
+		\includegraphics[width=0.3\textwidth]{figures/tortoise.png}%
+	};
 
-	\vspace{-1em}
+	\vspace{-0.5em}
+	An exhaustive grid search would be too slow.
+	\Wider{%
+		\vspace{2em}
+		\begin{cbox}{KCLpurple}{Surrogate modelling with mlpwr}
+			% Surrogate modeling aims to approximate a relationship that is costly to
+			% investigate with a cheaper function.
 
-	\begin{columns}
-		\begin{column}[c]{0.55\textwidth}
-			\centering
-			An exhaustive grid search would be too slow for many model types.
-		\end{column}
-		\begin{column}[c]{0.30\textwidth}
-			\includegraphics[width=\textwidth]{figures/tortoise.png}
-		\end{column}
-	\end{columns}
+			\begin{itemize}
+				\item Approximates relationship between sample size and
+				      $P^{OK}$ using Guassian process regression.
+				\item Also referred to as `learning curve
+				      fitting'\autocite{figueroa2012, dayimu2023}.
+				\item Uses the mlpwr R package by Zimmer and
+				      Debelak\autocite{zimmer2022}.
+			\end{itemize}
+		\end{cbox}
 
-	\vspace{-1.5em}
-
-	\begin{cbox}{KCLpurple}{Surrogate modelling}
-
-		% Surrogate modeling aims to approximate a relationship that is costly to
-		% investigate with a cheaper function.
-
-		\begin{itemize}
-			\item Surrogate modelling approximates the relationship between
-			      sample size and $P^{OK}$.
-			\item Also referred to as `learning curve
-			      fitting'\autocite{figueroa2012, dayimu2023}.
-			\item We're building on the mlpwr R package by Felix Zimmer and
-			      Rudolf Debelak CITE. \emph{Simulation-based Design
-			      Optimization for Statistical Power:\ Utilizing Machine
-			      Learning} (Forthcoming, JOURNAL)
-			\item This uses Gaussian process regression.
-		\end{itemize}
-	\end{cbox}
+		\vspace{0.3em}
+		\centering
+		\includegraphics[width=\textwidth]{figures/surrogate_algorithm.pdf}%
+	}
 \end{frame}
 
 \begin{frame}[c]{Surrogate modelling}
 
-	\centering
-	\includegraphics[width=0.8\textwidth]{figures/surrogate_algorithm.pdf}
-
-\end{frame}
-
-\begin{frame}[c]{Surrogate modelling}
-
-    \includegraphics<+>[width=\textwidth]{figures/surrogate-1.pdf}%
-    \includegraphics<+>[width=\textwidth]{figures/surrogate-2.pdf}%
-    \includegraphics<+>[width=\textwidth]{figures/surrogate-3.pdf}%
-    \includegraphics<+>[width=\textwidth]{figures/surrogate-4.pdf}%
-    \includegraphics<+>[width=\textwidth]{figures/surrogate-5.pdf}%
-    \includegraphics<+>[width=\textwidth]{figures/surrogate-6.pdf}%
-    \includegraphics<+>[width=\textwidth]{figures/surrogate-7.pdf}%
-    \includegraphics<+>[width=\textwidth]{figures/surrogate-8.pdf}%
+	\includegraphics<+>[width=\textwidth]{figures/surrogate-1.pdf}%
+	\includegraphics<+>[width=\textwidth]{figures/surrogate-3.pdf}%
+	\includegraphics<+>[width=\textwidth]{figures/surrogate-4.pdf}%
+	\includegraphics<+>[width=\textwidth]{figures/surrogate-5.pdf}%
+	\includegraphics<+>[width=\textwidth]{figures/surrogate-6.pdf}%
+	\includegraphics<+>[width=\textwidth]{figures/surrogate-7.pdf}%
+	\includegraphics<+>[width=\textwidth]{figures/surrogate-8.pdf}%
 
 \end{frame}
 
 \begin{frame}[t]{How do we assess performance?}
 
-	We identify the minimum sample that meets \underline{two} criteria:
+	\Wider{
+		\includegraphics[width=\textwidth]{figures/performance_flow.pdf}%
 
-	\begin{cbox}{KCLpeagreen}{1.\ Discrimination}
+		We identify the minimum sample that meets \underline{two} criteria:
 
-		{\large
-            Within 0.1 of the achievable performance without sample size constraints,
-            $P^*$}
+		\begin{cbox}{KCLpeagreen}{}
+			{\large
+				\textbf{1.\ Discrimination} \\
 
-		\bgap
+				Within 0.1 of the achievable large sample discrimination,
+				$P^*$. }
 
-		The choice of metric and metric can be set by users\\
-        \R{minimum_threshold = 0.1}
-        \R{metric = "auc"}
-        
+			\bgap
 
-	\end{cbox}
+			The threshold and metric can be chosen by users.
+		\end{cbox}
 
-	\begin{cbox}{KCLseablue}{2.\ Calibration}
-        {\large
-        Within 0.1 of a calibration slope of 1.0}
+		\begin{cbox}{KCLpantone}{}
+			{\large
+				\textbf{2.\ Calibration} \\
 
-	\end{cbox}
+				A calibration slope of 0.9 to 1.1.}
+		\end{cbox}
+
+		But we're open to suggestions. }
 
 \end{frame}
 
@@ -520,10 +476,10 @@
 	\footnotesize
 	\Wider[5em]{
 		\begin{tabular}{lp{0.4\textwidth}p{0.4\textwidth}}
-			                                   & {\Large pmsims}                                                                                                     & {\Large pmsampsize}                                \\
-			Target?                            & Find training sample size such that an expected apparent and test performances are sufficiently close to each other &
-			Find sample size such that with 80\% probability test performance is above $P^{*}$                                                                                                                            \\[14mm]
-			How?                               & {\large \textcolor{KCLpurple}{Simulate}}                                                                            & {\large \textcolor{KCLhotpink}{Uniform shrinkage}} \\
+			                                   & {\Large \textcolor{KCLpurple}{pmsims}}                                                                 & {\Large \textcolor{KCLhotpink}{pmsampsize}}        \\
+			Target?                            & Minimum development sample that ensures expected apparent and test performances are sufficiently close &
+			Minimum development sample that ensures test performance of $P^{OK}$ with 80\% probability                                                                                                       \\[14mm]
+			How?                               & {\large \textcolor{KCLpurple}{Simulate}}                                                               & {\large \textcolor{KCLhotpink}{Uniform shrinkage}} \\
 			                                   &
 			\begin{minipage}[t]{0.4\textwidth}
 				\begin{itemize}
@@ -559,32 +515,73 @@
 
 \begin{frame}[t]
 	\footnotesize
-	\Wider[5em]{
-		\begin{tabular}{p{0.5\textwidth}p{0.5\textwidth}}
-			{\Large pmsims} & {\Large pmsampsize} \\
-			\begin{minipage}[t]{0.4\textwidth}
+	\Wider[4.5em]{
+		\begin{tabular}{@{}p{0.5\textwidth}@{}p{0.5\textwidth}}
+			{\Large pmsims}                     & {\Large pmsampsize} \\
+			\begin{minipage}[t]{0.45\textwidth}
 				\begin{itemize}
 					\item Targets absolute performance
-					\item Flexible, handles machine learning or multilevel
-					      models, etc.
+					\item Flexible
+					      % Machine learning, multilevel models, etc.
 					      % heteroscedasticity and multicollinearity in the data
 					\item Does not aim to prevent overfitting per se
-					\item Targets test performance itself *
-					\item Adjusts recommendations to the test performance
-					      variance **
+					\item Targets test performance*
+					\item Adjusts recommendations for test performance
+					      variance**
 				\end{itemize}
 				However:\
 				\begin{itemize}
-					\item Takes time / computational resources
-					\item Requires user input including the prediction model
-					      and/or data generator for complex designs
-					\item Depends on simulations, so variability of results is
-					      expected
+					\item Computationally demanding
+					\item User must specify data/model for complex designs
+					\item Simulation variability
 				\end{itemize}
-
+			\end{minipage} &
+			\begin{minipage}[t]{0.45\textwidth}
+				\begin{itemize}
+					\item Fast, closed-form solutions
+					\item Ensures sufficient training sample to prevent
+					      overfitting
+				\end{itemize}
+				However:\
+				\begin{itemize}
+					\item Closed-form only for some
+					      models\autocite{riley2021}.
+					\item Does not adjust predictions to the variance of the
+					      test performance\autocite{vanhouwelingen1990a}.
+					\item As only one training sample will be available to the
+					      model developers, actual performance once deployed
+					      may be much lower**.
+				\end{itemize}
 			\end{minipage}
 		\end{tabular}
 	}
+
+\end{frame}
+
+\begin{frame}[t]{}
+	\Wider{
+		Compared to pmsampsize, we expect our approach will require:
+
+		\begin{itemize}
+			\item Lower N for machine learning models:\
+			      \begin{itemize}
+				      \item Tend to overfit but may still produce high test
+				            performance.
+				      \item Targeting shrinkage requires $\uparrow$ N compared
+				            to targeting test performance
+			      \end{itemize}
+			\item Higher N for noisy data and models with high variance:\
+			      \begin{itemize}
+				      \item 0.2 quantile of test performance will
+				            be lower than mean, requiring larger N
+			      \end{itemize}
+		\end{itemize}
+
+		\vspace{5em}
+		\centering
+		Diana figure here.
+	}
+
 \end{frame}
 
 \begin{frame}[c,fragile]{The user interface}
@@ -657,15 +654,15 @@ simulate_binary(
 )
             \end{minted}
 		\end{cbox}
-	};
+	}2
 
 \end{frame}
 
 \begin{frame}[b,fragile]{Example 2:\ Binary outcome, LASSO regression}
 
-    \Wider{
-    \includegraphics[width=0.9\textwidth]{figures/demo2.pdf}%
-}
+	\Wider{
+		\includegraphics[width=0.9\textwidth]{figures/demo2.pdf}%
+	}
 
 	\tikz[overlay, remember picture]
 	\node[anchor=north east, yshift=-0.9cm] at (current page.north east) {
@@ -688,13 +685,11 @@ simulate_binary(
 		\end{cbox}
 	};
 
-
 \end{frame}
 
 \begin{frame}[c,fragile]{Example 3:\ Custom model function}
 
-	What if a model hasn't been implemented?%
-    \vspace{-0.5em}%
+	What if a model hasn't been implemented?        \vspace{-0.5em}%%
 
 	\begin{columns}
 		\begin{column}[T]{0.5\textwidth}
@@ -761,61 +756,92 @@ simulate_custom(
 
 \begin{frame}[t]{Development status}
 
-	\sgap
-	We're currently developing the package.%
-	\vspace{1em}
+	We're still developing the package.
 
 	% Say: it works, but more testing needed.
 
-	\begin{tabular}{cp{0.8\textwidth}}
-		\includegraphics[width=2em,valign=c]{figures/mastodon.pdf} &
-		\href{https://fediscience.org/@ewan}{\textcolor{KCLhotpink}{fediscience.org/@ewan}}
-		for updates                                                  \\[1.7em]
-		\includegraphics[width=2em,valign=c]{figures/email.pdf} & \textcolor{KCLhotpink}{ewan.carr@kcl.ac.uk}\\[1.7em]
-		\includegraphics[width=2em,valign=c]{figures/bell.pdf}    &
-		Enter email at
-		\href{https://tinyurl.com/is-pmsims-ready-yet}{\textcolor{KCLhotpink}{tinyurl.com/is-pmsims-ready-yet}}
-		to get one email when a public release is available.         \\[1.7em]
-		\includegraphics[width=2em,valign=c]{figures/hi.pdf}       &
-		Come and talk to us.
-	\end{tabular}
+	\begin{cbox}[colframe=KCLhotpink!50!white]{KCLhotpink!30!white}{}
+
+		\begin{tabular}{cp{0.8\textwidth}}
+			\includegraphics[width=2em,valign=c]{figures/mastodon.pdf} &
+			\href{https://fediscience.org/@ewan}{\textcolor{KCLhotpink}{fediscience.org/@ewan}}
+			for updates                                                  \\[1.6em]
+			\includegraphics[width=2em,valign=c]{figures/bell.pdf}     &
+			Enter email at
+			\href{https://tinyurl.com/is-pmsims-ready-yet}{\textcolor{KCLhotpink}{tinyurl.com/is-pmsims-ready-yet}}
+			to get one email when a public release is available.         \\[1.6em]
+			\includegraphics[width=2em,valign=c]{figures/hi.pdf}       &
+			Come and talk to us.
+		\end{tabular}
+	\end{cbox}
+
+	\begin{cbox}{gray}{Next steps}
+		\begin{columns}
+			\begin{column}[T]{0.45\textwidth}
+				\begin{enumerate}
+					\item[1.] \textcolor{KCLpurple}{Machine learning}
+					\item[2.] \textcolor{KCLpurple}{Longitudinal data}
+				\end{enumerate}
+			\end{column}
+			\begin{column}[T]{0.45\textwidth}
+				\begin{enumerate}
+					\item[3.] \textcolor{KCLpurple}{Common data types}
+						% e.g., clinical, NLP, genetic.
+					\item[4.] \textcolor{KCLpurple}{Performance}
+				\end{enumerate}
+			\end{column}
+		\end{columns}
+	\end{cbox}
 
 	% Say: criteria/models are subject to change.
 
 \end{frame}
 
-\begin{frame}[t]{What's next?}
-
-\begin{cbox}{KCLtealblue}{1.\ Machine learning}{}
-
-\end{cbox}
-
-\begin{cbox}{KCLpurple}{2.\ Longitudinal data}{}
-
-\end{cbox}
-
-\begin{cbox}{KCLseablue}{3.\ Common data types}{}
-e.g., clinical, NLP, genetic.
-
-\end{cbox}
-
-\begin{cbox}{KCLhotpink}{4.\ Performance}{}
-
-\end{cbox}
-
-\end{frame}
-
-
-\begin{frame}[c]
-    \centering
+\begin{frame}[t]
+	\centering
+	\vspace{0.4\textheight}
 	Thank you for listening.
+	\vfill
+	\centering
+	\begin{columns}
+		\begin{column}[c]{0.45\textwidth}
+			\includegraphics[width=1.5em,valign=c]{figures/email.pdf}%
+			\hspace{0.8em}%
+			\textcolor{KCLhotpink}{ewan.carr@kcl.ac.uk}\\[1.7em]
+		\end{column}
+		\begin{column}[c]{0.45\textwidth}
+			\includegraphics[width=1.5em,valign=c]{figures/mastodon.pdf}
+			\hspace{0.8em}%
+			\href{https://fediscience.org/@ewan}{\textcolor{KCLhotpink}{fediscience.org/@ewan}}
+		\end{column}
+	\end{columns}
+
 \end{frame}
 
 \appendix
 
 \begin{frame}[allowframebreaks]{References}
-    \renewcommand*{\bibfont}{\scriptsize}
+	\renewcommand*{\bibfont}{\scriptsize}
 	\printbibliography
 \end{frame}
 
+\begin{frame}{pmsampsize}
+
+	The package identifies the minimum sample that results in: \\[1em]
+
+	\centering
+
+	\begin{tabular}{l>{\raggedright\arraybackslash}p{12em}>{\raggedright\arraybackslash}p{12em}}
+		           & \textbf{Continuous}                                          & \textbf{Binary} \\ \midrule
+		i.         & \multicolumn{2}{p{24em}}{Small optimism in predictor effect
+		estimates, indicated by a global shrinkage factor of ≥ 0.9.}                                \\ \midrule
+		ii.        & \multicolumn{2}{p{20em}}{Small absolute difference of ≤ 0.05
+		in the apparent and adjusted $R^2$}                                                         \\ \midrule
+		iii.       & Precise estimation of the model's residual standard
+		deviation. & Precise estimation of the overall risk in the
+		population.                                                                                 \\ \midrule
+		iv.        & Precise estimation of the model intercept.                   &                 \\
+	\end{tabular}
+
+\end{frame}
 \end{document}
