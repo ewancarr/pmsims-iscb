@@ -1,14 +1,13 @@
 \documentclass[11pt]{beamer}
 \usepackage{booktabs}
-\usepackage{amsmath}
 \usepackage{array}
-\usepackage{eulervm}
 \usepackage{tcolorbox}
 \usepackage[export]{adjustbox}
 \usepackage{tikz}
 \usepackage{minted}
 \usemintedstyle{gruvbox-light}
 \newcommand{\R}[1]{\mintinline[escapeinside=||]{r}{#1}}
+\usepackage{mathrsfs}
 
 \newcommand*{\colitem}[2]{%
     \item[\textcolor{#1}{\textbullet}] \textcolor{#1}{#2}
@@ -29,15 +28,8 @@
 
 \usepackage[scaled]{helvet}
 \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage[scale=0.95]{inconsolata}
-
-% If using XeLaTeX:
-% \usepackage{fontspec}
-% \setmonofont[Path=./fonts/,Scale=0.9]{JetBrainsMono.ttf}
-% \setmainfont[Path=./fonts/]{KingsBureauGrot-FiveOne.ttf}
-% \setsansfont[Path=./fonts/]{KingsCaslon.ttf}
-% \setbeamerfont{title page}{family=\rmfamily}
-% \setbeamerfont{frametitle}{family=\rmfamily}
 
 % References ------------------------------------------------------------------
 
@@ -200,36 +192,35 @@
 
 \section{Background}
 
-\begin{frame}[t]{What's the problem?}
+\begin{frame}[t]{Most models are developed with inadequate samples}
 
 	% Say: Prediction models can inform treatment decisions, facilitate
 	% screening, and enable stratified care.
 
     % risk stratification, informing, shared decision making
 
-	Hundreds of prediction models are developed each year. Most have
-	inadequate samples.
+	% Hundreds of prediction models are developed each year. Most have
+	% inadequate samples.
 
 	\begin{cbox}{KCLseablue}{}
 		\large
 		\begin{itemize}
-			\item Insufficient sample sizes was the most common cause of bias
+			\item Inadequate sample sizes was the most common cause of bias
 			      in 731 models for COVID-19.\autocite{wynants2020}
-			\item Inadequate samples were found in: \vspace{0.5em}
+			\item Inadequate samples have been found in: \vspace{0.5em}
 		\end{itemize}
-		\begin{tabular}{lp{.8\textwidth}}
-			{\Huge \alert{67\%}} & models for COVID-19\autocite{wynants2020}                      \\[0.5em]
-			{\Huge \alert{56\%}} & models using supervised machine learning\autocite{navarro2021} \\[0.5em]
-			{\Huge \alert{73\%}} & models in psychiatry\autocite{meehan2022}                      \\[0.3em]
+		\begin{tabular}{rl}
+			{\huge \alert{67\%}} & models for COVID-19\autocite{wynants2020}                      \\[0.5em]
+			{\huge \alert{56\%}} & models using supervised machine learning\autocite{navarro2021} \\[0.5em]
+			{\huge \alert{73\%}} & models in psychiatry\autocite{meehan2022}                      \\[0.3em]
 		\end{tabular}
-		\begin{itemize}
-			\item Just \alert{8\%} of machine learning models in oncology
-			      reported a sample size justification\autocite{dhiman2022}.
-		\end{itemize}
+		% \begin{itemize}
+		% 	\item Just \alert{8\%} of machine learning models in oncology
+		% 	      reported a sample size justification\autocite{dhiman2022}.
+		% \end{itemize}
 	\end{cbox}
-\end{frame}
 
-\begin{frame}[t]{Inadequate samples = research waste}
+Inadequate samples = research waste
 
 	\begin{itemize}
 		\item Inadequate samples lead to overfitting and inaccurate estimates
@@ -257,7 +248,6 @@
 \end{frame}
 
 \begin{frame}[t]{What tools exist?}
-
 	\centering
 	\begin{columns}
 		\begin{column}[c]{0.6\textwidth}
@@ -293,43 +283,37 @@
 
 \begin{frame}[c]{We \img{figures/heart.png} pmsampsize, but\ldots}
 
-    \large
+	\large
 	We increasingly need to estimate minimum samples for:\ \sgap
 	\begin{itemize}
-        \colitem{KCLpurple}{\textbf{Other models} (e.g., machine learning algorithms, random
+		\colitem{KCLpurple}{\textbf{Other models} (e.g., machine learning algorithms, random
 			forests, gradient boosting);}
-            \colitem{KCLseablue}{\textbf{Other data types} (e.g., longitudinal, clustered)}
+		\colitem{KCLseablue}{\textbf{Other data types} (e.g., longitudinal, clustered)}
 	\end{itemize}
 
-	\sgap
-	$\rightarrow$~
-	\begin{minipage}[t]{0.95\textwidth}
-		We're creating a simulation-based framework to estimate sample sizes for
-		prediction.
-	\end{minipage}
-	\bgap
+    \vspace{0.5em}
+    We're creating a \textbf{simulation-based framework} to estimate sample
+    sizes for prediction.
+    \vspace{0.5em}
 
-    \Wider{
 	\begin{cbox}{KCLhotpink}{The pmsims package for R}
 		\begin{tabular}{rp{0.8\textwidth}}
-			\textbf{Flexible}   & Any model or data type                                \\
-			\textbf{Accessible} & Defaults for common scenarios; user-friendly \\
-			\textbf{Fast}       & Efficient estimation via surrogate modelling
+			\textbf{Flexible}      & Any model or data type             \\
+			\textbf{User-friendly} & Defaults for common scenarios      \\
+			\textbf{Efficent}      & Estimation via surrogate modelling
 		\end{tabular}
 	\end{cbox}
-}
 
 \end{frame}
 
-\begin{frame}[t]{Our approach}
-    \vspace{0.5em}
+\begin{frame}[c]{Our approach}
     \begin{cbox}[bottom=4mm]{KCLpeagreen}{Setting}
 		\begin{enumerate}
 			\setlength{\itemsep}{7pt}
             \item A \textbf{study population} represented by outcome-related individual
 			      characteristics (i.e., candidate predictors).
               \item A chosen statistical or machine learning \textbf{model}.
-              \item Expected achievable \textbf{large-sample performance} (e.g., $R^2$, AUC), $P^{*}$, given population and model.
+              \item Expected achievable \textbf{large-sample performance}, $P^{*}$, given population and model.
               \item Minimum \textbf{acceptable test performance} of the model, $P^{OK}$.
 		\end{enumerate}
 	\end{cbox}
@@ -397,7 +381,7 @@
 		anchor=north east,
 		yshift=0.2cm,
 		xshift=-0.5cm]at (current page.north east) {
-		\includegraphics[width=0.3\textwidth]{figures/tortoise.png}%
+		\includegraphics[width=0.28\textwidth]{figures/tortoise.png}%
 	};
 
 	\vspace{-0.5em}
@@ -436,44 +420,44 @@
 \end{frame}
 
 \begin{frame}[t]{What is the performance of a prediction model?}
-	\includegraphics[width=\textwidth]{figures/performance_flow.pdf}%
+	\Wider{
+		\vspace{0.6em}
 
-	\textbf{Apparent vs. Test performance (or ``actual'' performance):}
+		{\centering
+			\includegraphics[width=\textwidth]{figures/performance_flow.pdf}%
+		}%
 
-	\begin{itemize}
-		\item Train and test performances are random variables of the drawn
-		      training sample
-		\item Test performance is expected to be worse than apparent; less
-		      with higher n.
-		\item Prediction model is as good as its test performance
-	\end{itemize}
+		\vspace{0.5em}%
 
-	\includegraphics[width=\textwidth]{figures/diana-auc.pdf}%
+		\textbf{Apparent vs. test performance (or ``actual'' performance)}
+
+		\begin{itemize}
+			\item Train/test performances are random variables of the drawn
+			      sample.
+			\item Test performance is expected to be worse than apparent; but
+			      difference reduced with higher n.
+			\item A prediction model is as good as its test performance.
+		\end{itemize}
+
+		\vspace{1em}
+		\includegraphics[width=\textwidth]{figures/diana-auc.pdf}%
+	}
 \end{frame}
 
 \begin{frame}[t]{How do we assess performance?}
 
-	We identify the minimum sample that meets \underline{two} criteria:
+	We identify the minimum sample that meets \underline{three} criteria:
 
-	\begin{cbox}{KCLpeagreen}{}
-		{\large
-			\textbf{1.\ Overall fit} \\
-			Within 0.1 of the achievable large sample fit (e.g., $R^2$, Brier score).
-        }
+	\begin{cbox}{KCLpeagreen}{1.\ Overall fit} \\
+		Within 0.1 of the achievable large sample fit (e.g., $R^2$, Brier).
 	\end{cbox}
 
-	\begin{cbox}{KCLpeagreen}{}
-		{\large
-			\textbf{2.\ Discrimination} \\
-			Within 0.1 of the achievable large sample discrimination (e.g., Concordance statistic, AUC).
-        }
+	\begin{cbox}{KCLseablue}{2.\ Discrimination} \\
+		Within 0.1 of the achievable large sample discrimination (e.g., C-statistic, AUC).
 	\end{cbox}
 
-	\begin{cbox}{KCLpantone}{}
-		{\large
-			\textbf{3.\ Calibration slope} \\
-
-			A calibration slope of 0.9 to 1.1.}
+	\begin{cbox}{KCLhotpink}{3.\ Calibration slope} \\
+		A calibration slope of 0.9 to 1.1.
 	\end{cbox}
 
 	The threshold and metric are user-configurable.
@@ -497,22 +481,22 @@
 				\item Tune data generator to an expected achievable performance.
 				\item For training data of different sizes, use mlpwr to find n at which
 				      80\% of test performances achieves $P^{OK}$.
-				      \item Calibration slope criterion is similar to uniform shrinkage criterion
-                          (slope is defined as minimizing the error between
-				            $y^{test}$ and ($\alpha + slope \times
+\item Calibration slope criterion is similar to uniform shrinkage criterion
+      (slope is defined as minimizing the error between
+				            $y^{test}$ and $\alpha + slope \times
 				            \hat{y}^{test}$).
 			\end{itemize}
 			\end{minipage} &
 			\begin{minipage}[t]{0.4\textwidth}
 				\begin{itemize}
-			\item Consider GLM models, where estimates depend on a
+                    \item Targets small train-test difference in $R^2$; or uniform shrinkage above given threshold (e.g., 0.9).
+			\item Uniform shrinkage:\ considers GLM models, where estimates depend on a
 			      linear predictor, $x^{T}\hat{\beta}$, with
 			      $\hat{\beta}-$ OLS/ML estimates from the training
 			      sample.
-			\item Using $s \cdot x^{T}\hat{\beta}$, instead of
+			\item Using $s \cdot x^{T} \hat{\beta}$, instead of
 			      $x^{T}\hat{\beta}$ may prevent overfitting and
 			      perform better on unseen cases.
-              \item e.g.\ for linear regression, $s = \frac{SS^{exp}-p\cdot\hat{\sigma}^2}{SS^{exp}}, $p-1$ predictors, $\hat{\sigma}^2$ sampled variance, $SS^{exp}$ explained sum of squares.
 			\end{itemize}
 			\end{minipage}
 		\end{tabular}
@@ -521,7 +505,7 @@
 
 \end{frame}
 
-\begin{frame}[t]
+\begin{frame}[t]{What are the distinctive features of these approaches?}
 	\footnotesize
 	\Wider[4.5em]{
 		\begin{tabular}{@{}p{0.5\textwidth}@{}p{0.5\textwidth}}
@@ -567,27 +551,26 @@
 \end{frame}
 
 \begin{frame}[t]{}
+
 	\Wider{
-		Compared to pmsampsize, we expect our approach will require:
-
-		\begin{itemize}
-			\item Lower N for machine learning models:\
-			      \begin{itemize}
-				      \item Tend to overfit but may still produce high test
-				            performance.
-				      \item Targeting shrinkage requires $\uparrow$ N compared
-				            to targeting test performance
-			      \end{itemize}
-			\item Higher N for noisy data and models with high variance:\
-			      \begin{itemize}
-				      \item 0.2 quantile of test performance will
-				            be lower than mean, requiring larger N
-			      \end{itemize}
-		\end{itemize}
-
-		\vspace{5em}
+		Compared to pmsampsize, our approach will require:
+		\vspace{-0.3em}
+		\begin{tcolorbox}[arc=0.3mm, colback=white]
+			\textcolor{KCLpeagreen}{Smaller N} for machine learning models:\
+			\begin{itemize}
+				\setlength\itemsep{0.2mm}
+				\item[--] Tend to overfit but may still achieve high test
+					performance.
+				\item[--] Targeting shrinkage requires $\uparrow$N than performance.
+			\end{itemize}
+			\textcolor{KCLred}{Larger N} for noisy data and models with high variance:\
+			\begin{itemize}
+				\setlength\itemsep{0mm}
+				\item[--] 0.2 quantile test performance < mean performance.
+			\end{itemize}
+		\end{tcolorbox}
 		\centering
-        \includegraphics[width=\textwidth]{figures/diana-auc.pdf}%
+		\includegraphics[width=\textwidth]{figures/diana-slope.pdf}%
 	}
 
 \end{frame}
@@ -783,13 +766,13 @@ simulate_custom(
 		\end{tabular}
 	\end{cbox}
 
-    Next steps:\ 
+	Next steps:\
 
-    \begin{enumerate}
-        \item[\{KCLpurple}{Data and model generators for common machine
-            learning algorithms}
-        \colitem{KCLpurple}{\ldots for longitudinal and clustered data.}
-    \end{enumerate}
+	% \begin{enumerate}
+	%     \item[\{KCLpurple}{Data and model generators for common machine
+	%         learning algorithms}
+	%     \colitem{KCLpurple}{\ldots for longitudinal and clustered data.}
+	% \end{enumerate}
 
 	\begin{cbox}{white}{Next steps}
 		\begin{columns}
@@ -835,20 +818,11 @@ simulate_custom(
 
 \begin{frame}[t]
 	\centering
-	\vspace{0.4\textheight}
 	Thank you for listening.
-	\vfill
     \begin{tabular}{cl}
         \includegraphics[width=1.5em,valign=c]{figures/email.pdf} & \textcolor{KCLhotpink}{ewan.carr@kcl.ac.uk}\\[1.7em] 
-        \includegraphics[width=1.5em,valign=c]{figures/mastodon.pdf} & \href{https://fediscience.org/@ewan}{\textcolor{KCLhotpink}{fediscience.org/@ewan}} \\[1.7em]
-    
+        \includegraphics[width=1.5em,valign=c]{figures/mastodon.pdf} & \href{https://fediscience.org/@ewan}{\textcolor{KCLhotpink}{fediscience.org/@ewan}} 
     \end{tabular}
-		\includegraphics[width=1.5em,valign=c]{figures/email.pdf}%
-		\hspace{0.8em}%
-		\textcolor{KCLhotpink}{ewan.carr@kcl.ac.uk}\\[1.7em]
-		\includegraphics[width=1.5em,valign=c]{figures/mastodon.pdf}
-		\hspace{0.8em}%
-		\href{https://fediscience.org/@ewan}{\textcolor{KCLhotpink}{fediscience.org/@ewan}}
 end{frame}
 
 \appendix
@@ -858,23 +832,4 @@ end{frame}
 	\printbibliography
 \end{frame}
 
-\begin{frame}{pmsampsize}
-
-	The package identifies the minimum sample that results in: \\[1em]
-
-	\centering
-
-	\begin{tabular}{l>{\raggedright\arraybackslash}p{12em}>{\raggedright\arraybackslash}p{12em}}
-		           & \textbf{Continuous}                                          & \textbf{Binary} \\ \midrule
-		i.         & \multicolumn{2}{p{24em}}{Small optimism in predictor effect
-		estimates, indicated by a global shrinkage factor of ≥ 0.9.}                                \\ \midrule
-		ii.        & \multicolumn{2}{p{20em}}{Small absolute difference of ≤ 0.05
-		in the apparent and adjusted $R^2$}                                                         \\ \midrule
-		iii.       & Precise estimation of the model's residual standard
-		deviation. & Precise estimation of the overall risk in the
-		population.                                                                                 \\ \midrule
-		iv.        & Precise estimation of the model intercept.                   &                 \\
-	\end{tabular}
-
-\end{frame}
 \end{document}
