@@ -2,39 +2,59 @@
 \usepackage{tcolorbox}
 \usepackage{multicol}
 \usepackage[export]{adjustbox}
+\usepackage{graphicx}
 \usepackage{tikz}
 \usepackage{minted}
 \usepackage{amssymb}
 \usemintedstyle{gruvbox-light}
-\newcommand{\R}[1]{\mintinline[escapeinside=||]{r}{#1}}
 \usepackage{mathrsfs}
-
 \usepackage{array,booktabs,ragged2e}
 \setlength{\RaggedRightRightskip}{0pt plus 9em}
 \newcolumntype{R}[1]{>{\RaggedRight\arraybackslash}p{#1}}
 
+% Commands --------------------------------------------------------------------
+
+\newcommand{\R}[1]{\mintinline[escapeinside=||]{r}{#1}}
+
 \newcommand*{\tc}[2]{%
-    \textcolor{#1}{#2}
+	\textcolor{#1}{#2}
 }
 
 \newcommand*{\gr}[1]{%
-    {\small \textcolor{gray}{#1}}
+	{\small \textcolor{gray}{#1}}
 }
 
-
 \newcommand*{\colitem}[2]{%
-    \item[\textcolor{#1}{\textbullet}] \textcolor{#1}{#2}
+	\item[\textcolor{#1}{\textbullet}] \textcolor{#1}{#2}
 }
 
 \newcommand{\sgap}{\vspace{0.5em}}
 \newcommand{\bgap}{\vspace{0.8em}}
 
 \newcommand\Wider[2][3em]{%
-\makebox[\linewidth][c]{%
-  \begin{minipage}{\dimexpr\textwidth+#1\relax}
-  \raggedright#2
-  \end{minipage}%
-  }%
+	\makebox[\linewidth][c]{%
+		\begin{minipage}{\dimexpr\textwidth+#1\relax}
+			\raggedright#2
+		\end{minipage}%
+	}%
+}
+
+\newcommand*{\img}[1]{%
+	\raisebox{-.3\baselineskip}{%
+		\includegraphics[
+			height=\baselineskip,
+			width=\baselineskip,
+			keepaspectratio,
+		]{#1}%
+	}%
+}
+
+\newcommand*{\timg}[2]{%
+	\raisebox{-.5#1}{%
+		\includegraphics[
+			width=#1
+		]{#2}%
+	}%
 }
 
 % Fonts --------------------------------------------------------------------------
@@ -47,11 +67,11 @@
 % References ------------------------------------------------------------------
 
 \usepackage[%
-  backend     = biber,
-  style       = numeric,
-  sorting     = ynt,
-  sortcites   = true,
-  autocite    = superscript
+	backend     = biber,
+	style       = numeric,
+	sorting     = ynt,
+	sortcites   = true,
+	autocite    = superscript
 ]{biblatex}
 
 \addbibresource{references.bib}
@@ -60,58 +80,39 @@
 
 \newtcolorbox{cbox}[3][]
 {
-  colframe = #2!5,
-  colback  = #2!5,
-  coltitle = #2!50!black,  
-  colbacktitle = #2!5,
-  lefttitle = 1mm,
-  toptitle = 2mm,
-  bottomtitle = 0mm,
-  colupper = #2!50!black,  
-  title    = {#3},
-  fonttitle = \bfseries\large,
-  #1,
-  arc=0.5mm,
-  left=2.5mm,
-  before upper={\setbeamercolor{item}{fg=#2!50!black}},
-  after upper={\setbeamercolor{item}{fg=#2!50!black}}
+	colframe = #2!5,
+	colback  = #2!5,
+	coltitle = #2!50!black,
+	colbacktitle = #2!5,
+	lefttitle = 1mm,
+	toptitle = 2mm,
+	bottomtitle = 0mm,
+	colupper = #2!50!black,
+	title    = {#3},
+	fonttitle = \bfseries\large,
+	#1,
+	arc=0.5mm,
+	left=2.5mm,
+	before upper={\setbeamercolor{item}{fg=#2!50!black}},
+	after upper={\setbeamercolor{item}{fg=#2!50!black}}
 }
 
 \makeatletter
 \def\beamer@origitem{%
-  \@inmatherr\item\@ifnextchar[\@item{\@noitemargtrue\@item[\@itemlabel]%
-  \csname beamer@thcfg@\beameritemnestingprefix item\endcsname% Insert colour in \beamer@thc@fg
-  \ifx\beamer@thc@fg\@empty\relax\else\color{\beamer@thc@fg}\fi% Execute colour
-  }}
+\@inmatherr\item\@ifnextchar[\@item{\@noitemargtrue\@item[\@itemlabel]%
+	\csname beamer@thcfg@\beameritemnestingprefix item\endcsname% Insert colour in \beamer@thc@fg
+	\ifx\beamer@thc@fg\@empty\relax\else\color{\beamer@thc@fg}\fi% Execute colour
+}}
 \makeatother
 
-\usepackage{graphicx}
-\newcommand*{\img}[1]{%
-    \raisebox{-.3\baselineskip}{%
-        \includegraphics[
-        height=\baselineskip,
-        width=\baselineskip,
-        keepaspectratio,
-        ]{#1}%
-    }%
-}
-
-\newcommand*{\timg}[2]{%
-	\raisebox{-.5#1}{%
-		\includegraphics[
-			width=#1
-		]{#2}%
-    }%
-}
-
 \title[The pmsims package for R]{
-    A simulation approach to calculating minimum sample sizes for prediction
-    modelling
+	A simulation approach to calculating minimum sample sizes for prediction
+	modelling
 }
 \subtitle{The pmsims package for R}
 \date{29$^{\text{th}}$ August 2023}
 \author[Biostatistics \& Health Informatics, KCL]{%
-    Ewan Carr, Gordon Forbes, Diana Shamsutdinova, \mbox{Daniel Stahl},
+	Ewan Carr, Gordon Forbes, Diana Shamsutdinova, \mbox{Daniel Stahl},
 	and Felix Zimmer}
 \institute[]{Department of Biostatistics \& Health Informatics\\ King's College London}
 \titlegraphic{\includegraphics[height=1.5cm]{figures/kcl.png}}
@@ -136,8 +137,8 @@
 \newenvironment{itemize*}%
 {\begin{itemize}%
 		\setlength{\itemsep}{100pt}%
-		\setlength{\parskip}{0pt}}%
-		{\end{itemize}}
+		\setlength{\parskip}{0pt}} {%
+\end{itemize}}
 
 \begin{document}
 
@@ -147,7 +148,6 @@
 	\vspace{1em}
 	\includegraphics[width=\textwidth]{figures/group_photos.pdf}%
 \end{frame}
-
 
 \section{Introduction}
 
@@ -177,7 +177,7 @@
 \end{frame}
 
 \begin{frame}[t]{This talk}
-    \sgap
+	\sgap
 	\Large
 	\begin{enumerate}
 		\item Background
@@ -194,7 +194,7 @@
 		\item Development status and next steps
 	\end{enumerate}
 
-    \normalsize
+	\normalsize
 	\vspace{6mm}
 	\begin{cbox}{KCLtealblue}{}
 		\centering
@@ -207,10 +207,8 @@
 \section{Background}
 
 \begin{frame}[t]{Most models are developed with inadequate samples}
-	% Say: Prediction models can inform treatment decisions, facilitate
+	% Prediction models can inform treatment decisions, facilitate
 	% screening, and enable stratified care.
-
-	% risk stratification, informing, shared decision making
 
 	% Hundreds of prediction models are developed each year. Most have
 	% inadequate samples.
@@ -249,7 +247,6 @@
 		      % or lead to models not being implemented into clinical practice.
 
 		\item Data collection can be invasive and inconvenient.
-
 		      % and diverts resources from other activities that benefit patients.
 
 	\end{itemize}
@@ -321,42 +318,44 @@
 		\RaggedRight
 		{\Large \textbf{The pmsims package for R}}
 
-        \bgap
+		\bgap
 
 		\begin{tabular}{rp{0.8\textwidth}}
 			\textbf{Flexible}      & Any model or data type             \\
 			\textbf{User-friendly} & Defaults for common scenarios      \\
-			\textbf{Efficient}      & Estimation via surrogate modelling
+			\textbf{Efficient}     & Estimation via surrogate modelling
 		\end{tabular}
 	\end{cbox}
 
 \end{frame}
 
 \begin{frame}[t]{Our approach}
-    \vspace{1em}
-    \Wider[1.5em]{
-    \begin{cbox}[bottom=4mm]{KCLpeagreen}{Setting}
-		\begin{enumerate}
-			\setlength{\itemsep}{7pt}
-            \item A \textbf{study population} represented by outcome-related individual
-			      characteristics (i.e., candidate predictors).
-              \item A chosen statistical or machine learning \textbf{model}.
-              \item Expected achievable \textbf{large-sample performance}, $P^{*}$, given population and model.
-              \item Minimum \textbf{acceptable test performance} of the model, $P^{OK}$.
-		\end{enumerate}
-	\end{cbox}
-}
+	\vspace{1em}
+	\Wider[1.5em]{
+		\begin{cbox}[bottom=4mm]{KCLpeagreen}{Setting}
+			\begin{enumerate}
+				\setlength{\itemsep}{7pt}
+				\item A \textbf{study population} represented by
+				      outcome-related individual characteristics (i.e.,
+				      candidate predictors).
+				\item A chosen statistical or machine learning \textbf{model}.
+				\item Expected achievable \textbf{large-sample performance},
+				      $P^{*}$, given population and model.
+				\item Minimum \textbf{acceptable test performance} of the
+				      model, $P^{OK}$.
+			\end{enumerate}
+		\end{cbox}
+	}
 
 	\onslide<2->
-    \vspace{1.2em}
+	\vspace{1.2em}
 	\centering
 	\includegraphics[height=3.6em]{figures/target.pdf}
 	\hspace{0.7em}
 	\large
-	\parbox[b]{0.8\textwidth}{ \raggedright \tc{KCLpantone}{ Find the
-	    minimum sample that ensures test performance of $P^{OK}$ with
-	    probability of 80\%, given the population, predictors, and $P^{*}$. }
-	    }
+	\parbox[b]{0.8\textwidth}{ \raggedright \tc{KCLpantone}{ Find the minimum
+	    sample that ensures test performance of $P^{OK}$ with probability of
+	    80\%, given the population, predictors, and $P^{*}$. } }
 
 	% i.e., drawing a random sample of size $n$ will result in a model with
 	% performance $>P^{OK}$ in more than 80\% of cases.
@@ -374,7 +373,7 @@
 			\includegraphics<+>[width=0.85\textwidth]{figures/workflow-d.pdf}%
 		\end{column}
 		\begin{column}{0.7\textwidth}
-            \large
+			\large
 			\only<1>{
 				\vspace{1em}
 				The user specifies:
@@ -458,7 +457,7 @@
 
 		\vspace{0.5em}%
 
-    {\large \tc{KCLpantone}{\textbf{Apparent vs. test performance} (or ``actual'' performance)}}
+		{\large \tc{KCLpantone}{\textbf{Apparent vs. test performance} (or ``actual'' performance)}}
 
 		\begin{itemize}
 			\item Train/test performances are random variables of the drawn
@@ -477,11 +476,11 @@
 
 	We identify the minimum sample that meets \underline{three} criteria:
 
-	\begin{cbox}{KCLpeagreen}{1.\ Overall fit} 
+	\begin{cbox}{KCLpeagreen}{1.\ Overall fit}
 		Within 0.1 of the achievable large sample fit (e.g., $R^2$, Brier).
 	\end{cbox}
 
-	\begin{cbox}{KCLseablue}{2.\ Discrimination} 
+	\begin{cbox}{KCLseablue}{2.\ Discrimination}
 		Within 0.1 of the achievable large sample discrimination (e.g., C-statistic, AUC).
 	\end{cbox}
 
@@ -493,7 +492,6 @@
 
 \end{frame}
 
-
 \begin{frame}[c]{Two approaches to estimating minimum samples}
 	\vspace{0.7em}
 	\small
@@ -504,18 +502,18 @@
 			@{~~}R{0.39\textwidth}%
 			R{0.41\textwidth}@{}}
 
-			                                                                & {\Large \tc{KCLpurple}{pmsims}}                                                                                                            & {\Large \tc{KCLhotpink}{pmsampsize}} \\[2mm]
-			\gr{Approach}                                                   & \tc{KCLpurple}{Simulate absolute test performance}                                                                                         &
-			\tc{KCLhotpink}{Analytical closenesss of train-test; prevent overfitting}                                                                                                                                                                           \\[2mm]
-			\gr{Target}                                                     &
+			                                                                 & {\Large \tc{KCLpurple}{pmsims}}                                                                                                         & {\Large \tc{KCLhotpink}{pmsampsize}} \\[2mm]
+			\gr{Approach}                                                    & \tc{KCLpurple}{Simulate absolute test performance}                                                                                      &
+			\tc{KCLhotpink}{Analytical closenesss of train-test; prevent overfitting}                                                                                                                                                                         \\[2mm]
+			\gr{Target}                                                      &
 			Sample ensuring test performance $P^{OK}$ with 80\% probability. &
-			Sample ensuring apparent and test performances are sufficiently close.                                                                                                                                                                               \\[7mm]
-			\gr{How}                                                        & Tune data generator, use mlpwr to search for minimum sample meeting criteria.                                                              &
+			Sample ensuring apparent and test performances are sufficiently close.                                                                                                                                                                            \\[7mm]
+			\gr{How}                                                         & Tune data generator, use mlpwr to search for minimum sample meeting criteria.                                                           &
 			Targets small train-test difference in $R^2$;
-			or uniform shrinkage above given threshold (e.g., 0.9).                                                                                                                                                                                             \\
-			\gr{Calibration}                                                & \begin{minipage}[t]{0.39\textwidth}\RaggedRight Calibration slope criterion is similar to uniform shrinkage criterion. \\ \vspace{.7em}
-				                                                                  Slope is defined as minimizing the error between $y^{test}$ and $\alpha + slope \times \hat{y}^{test}$.
-			                                                                  \end{minipage} &
+			or uniform shrinkage above given threshold (e.g., 0.9).                                                                                                                                                                                           \\
+			\gr{Calibration}                                                 & \begin{minipage}[t]{0.39\textwidth}\RaggedRight Calibration slope criterion is similar to uniform shrinkage criterion. \\ \vspace{.7em}
+				                                                                   Slope is defined as minimizing the error between $y^{test}$ and $\alpha + slope \times \hat{y}^{test}$.
+			                                                                   \end{minipage} &
 			\begin{minipage}[t]{0.39\textwidth}\RaggedRight
 				Uniform shrinkage:\ GLM models where estimates depend on a linear predictor, $x^{T}\hat{\beta}$, with $\hat{\beta}-OLS$ estimates from the training sample.                                                                                        \\ \vspace{.7em}
 				$s \cdot x^{T} \hat{\beta}$ may $\downarrow$overfitting and $\uparrow$performnce on unseen cases.
@@ -529,57 +527,14 @@
 	\Wider[3em]{
 		\renewcommand{\arraystretch}{1.8}
 		\begin{tabular}{@{}R{0.35\textwidth}R{0.3\textwidth}R{0.3\textwidth}@{}}
-			                                                     & {\Large \tc{KCLpurple}{pmsims}}  & {\Large \tc{KCLhotpink}{pmsampsize}} \\[2mm]
-			\tc{KCLpantone}{Flexibility}                        & Any model/data                          & Closed form only for some models            \\
-			\tc{KCLpantone}{Complex designs}                    & Specified by user               & Not possible                                \\
-			\tc{KCLpantone}{Speed}                              & Slower*                                 & Fast                                        \\
-			\tc{KCLpantone}{Of 100 training samples of size n*} & Test performance above $P^{OK}$ in 80\% & Mean test performance = $P^{OK}$            \\
+			                                                    & {\Large \tc{KCLpurple}{pmsims}}         & {\Large \tc{KCLhotpink}{pmsampsize}} \\[2mm]
+			\tc{KCLpantone}{Flexibility}                        & Any model/data                          & Closed form only for some models     \\
+			\tc{KCLpantone}{Complex designs}                    & Specified by user                       & Not possible                         \\
+			\tc{KCLpantone}{Speed}                              & Slower*                                 & Fast                                 \\
+			\tc{KCLpantone}{Of 100 training samples of size n*} & Test performance above $P^{OK}$ in 80\% & Mean test performance = $P^{OK}$     \\
 			\tc{KCLpantone}{Large test performance variability} & Adjusted for (using 0.2 quantile)       & Not adjusted for
 		\end{tabular}
 	}
-\end{frame}
-
-
-		% \begin{tabular}{@{}p{0.5\textwidth}@{}p{0.5\textwidth}}
-		% 	{\Large pmsims}                     & {\Large pmsampsize} \\
-		% 	\begin{minipage}[t]{0.45\textwidth}
-		% 		\begin{itemize}
-		% 			\item Targets absolute performance
-		% 			\item Flexible
-		% 			      % Machine learning, multilevel models, etc.
-		% 			      % heteroscedasticity and multicollinearity in the data
-		% 			\item Does not aim to prevent overfitting per se
-		% 			\item Targets test performance*
-		% 			\item Adjusts recommendations for test performance
-		% 			      variance**
-		% 		\end{itemize}
-		% 		However:\
-		% 		\begin{itemize}
-		% 			\item Computationally demanding
-		% 			\item User must specify data/model for complex designs
-		% 			\item Simulation variability
-		% 		\end{itemize}
-		% 	\end{minipage} &
-		% 	\begin{minipage}[t]{0.45\textwidth}
-		% 		\begin{itemize}
-		% 			\item Fast, closed-form solutions
-		% 			\item Ensures sufficient training sample to prevent
-		% 			      overfitting
-		% 		\end{itemize}
-		% 		However:\
-		% 		\begin{itemize}
-		% 			\item Closed-form only for some
-		% 			      models\autocite{riley2021}.
-		% 			\item Does not adjust predictions to the variance of the
-		% 			      test performance\autocite{vanhouwelingen1990a}.
-		% 			\item As only one training sample will be available to the
-		% 			      model developers, actual performance once deployed
-		% 			      may be much lower**.
-		% 		\end{itemize}
-		% 	\end{minipage}
-		% \end{tabular}
-	% }
-
 \end{frame}
 
 \begin{frame}[t]{}
@@ -679,35 +634,6 @@ simulate_binary(
 
 \end{frame}
 
-% \begin{frame}[b,fragile]{Example 2:\ Binary outcome, LASSO regression}
-
-% 	\Wider{
-% 		\includegraphics[width=0.9\textwidth]{figures/demo2.pdf}%
-% 	}
-
-% 	\tikz[overlay, remember picture]
-% 	\node[anchor=north east, yshift=-0.9cm] at (current page.north east) {
-% 		\begin{cbox}[width=4.8cm]{gray}{}%
-% 			\begin{minted}[%
-%                 highlightlines=9,
-%                 autogobble,
-%                 fontsize=\scriptsize]{r}
-% simulate_binary(
-%   signal_parameters = 20,
-%   baseline_prob = 0.1,
-%   min_sample_size = 500,
-%   max_sample_size = 15000,
-%   large_discrimination = ...,
-%   minimum_threshold = 0.1,
-%   metric = "auc",
-%   model = "lasso",
-% )
-%             \end{minted}
-% 		\end{cbox}
-% 	};
-
-% \end{frame}
-
 \begin{frame}[c,fragile]{Example:\ Custom model function}
 
 	What if a model hasn't been implemented? e.g., XGBoost \vspace{-0.5em}%
@@ -780,27 +706,26 @@ simulate_custom(
 	% We're still developing the package.
 	% It works, but more testing needed.
 
-		\begin{columns}
-			\begin{column}[T]{0.24\textwidth}
-				\begin{itemize}
-					\item[$\checkmark$]  Framework
-					\item[] {\scriptsize R package}
-				\end{itemize}
-			\end{column}
-			\begin{column}[T]{0.32\textwidth}
-				\begin{itemize}
-					\item[$\checkmark$]  Data generators
-					\item[] {\scriptsize Linear, binary, survival}
-				\end{itemize}
-			\end{column}
-			\begin{column}[T]{0.39\textwidth}
-				\begin{itemize}
-					\item[$\checkmark$] Model generators
-					\item[] {\scriptsize Linear, logistic, Cox, LASSO}
-				\end{itemize}
-			\end{column}
-		\end{columns}
-
+	\begin{columns}
+		\begin{column}[T]{0.24\textwidth}
+			\begin{itemize}
+				\item[$\checkmark$]  Framework
+				\item[] {\scriptsize R package}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{0.32\textwidth}
+			\begin{itemize}
+				\item[$\checkmark$]  Data generators
+				\item[] {\scriptsize Linear, binary, survival}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{0.39\textwidth}
+			\begin{itemize}
+				\item[$\checkmark$] Model generators
+				\item[] {\scriptsize Linear, logistic, Cox, LASSO}
+			\end{itemize}
+		\end{column}
+	\end{columns}
 
 	\vspace{2em}
 	{\large \tc{KCLseablue}{What's next?}}
@@ -845,8 +770,8 @@ simulate_custom(
 
 \begin{frame}[t]
 	\centering
-    \vspace{0.15\textheight}
-    {\Large Thank you for listening.}\\[3em]
+	\vspace{0.15\textheight}
+	{\Large Thank you for listening.}\\[3em]
 	\begin{tabular}{cl}
 		\includegraphics[width=1.5em,valign=c]{figures/slides.pdf}   & \tc{KCLhotpink}{\href{https://github.com/ewancarr/pmsims-iscb}{github.com/ewancarr/pmsims-iscb}} \\[1.3em]
 		\includegraphics[width=1.5em,valign=c]{figures/email.pdf}    & \tc{KCLhotpink}{ewan.carr@kcl.ac.uk}                                                             \\[.3em]
@@ -854,8 +779,8 @@ simulate_custom(
 		\includegraphics[width=1.5em,valign=c]{figures/mastodon.pdf} & \href{https://fediscience.org/@ewan}{\tc{KCLhotpink}{fediscience.org/@ewan}}
 	\end{tabular}
 
-    \vspace{4em}
-    \includegraphics[width=1.5cm]{figures/kcl.png}
+	\vspace{4em}
+	\includegraphics[width=1.5cm]{figures/kcl.png}
 \end{frame}
 
 \appendix
